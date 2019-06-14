@@ -66,24 +66,22 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          ClipPath(
-            child: Container(
-              color: Colors.red.withOpacity(0.6),
-            ),
-            clipper: LoginClipper(),
+        body: Stack(
+      children: <Widget>[
+        ClipPath(
+          child: Container(
+            color: Colors.red.withOpacity(0.6),
           ),
-          Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: buildInputs() + buildButtons(),
-          )
-        )
-        ],
-      )
-    );
+          clipper: LoginClipper(),
+        ),
+        Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: buildInputs() + buildButtons(),
+            ))
+      ],
+    ));
   }
 
   List<Widget> buildInputs() {
@@ -140,33 +138,32 @@ class _LoginState extends State<Login> {
     if (_formType == FormType.login) {
       return [
         Padding(
-          padding: const EdgeInsets.only(right: 20, top: 10),
-          child: Column(
-            children: <Widget>[
-              Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              FlatButton(
-                child: Text("Create account"),
-                onPressed: () {
-                  registerPage();
-                },
-              ),
-              RaisedButton(
-                  child: Text(
-                    "Login",
-                  ),
-                  onPressed: validateAndSubmit),
-            ],
-          ),
-          FlatButton(
-                child: Text("Reset Password"),
-                onPressed: (){},
-              )
-            ],
-          )
-          
-        )
+            padding: const EdgeInsets.only(right: 20, top: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text("Create account"),
+                      onPressed: () {
+                        registerPage();
+                      },
+                    ),
+                    RaisedButton(
+                        child: Text(
+                          "Login",
+                        ),
+                        onPressed: validateAndSubmit),
+                  ],
+                ),
+                FlatButton(
+                  child: Text("Reset Password"),
+                  onPressed: () {},
+                )
+              ],
+            ))
       ];
     } else {
       return [
