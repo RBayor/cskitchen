@@ -70,7 +70,7 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           ClipPath(
             child: Container(
-              color: Colors.deepOrangeAccent.withOpacity(0.6),
+              color: Colors.red.withOpacity(0.6),
             ),
             clipper: LoginClipper(),
           ),
@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextFormField(
             obscureText: true,
-            decoration: InputDecoration(labelText: 'Password'),
+            decoration: InputDecoration(labelText: 'Create Password'),
             validator: (value) =>
                 value.isEmpty ? "Please input a password" : null,
             onSaved: (value) => _password = value,
@@ -141,7 +141,9 @@ class _LoginState extends State<Login> {
       return [
         Padding(
           padding: const EdgeInsets.only(right: 20, top: 10),
-          child: Row(
+          child: Column(
+            children: <Widget>[
+              Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FlatButton(
@@ -157,6 +159,13 @@ class _LoginState extends State<Login> {
                   onPressed: validateAndSubmit),
             ],
           ),
+          FlatButton(
+                child: Text("Reset Password"),
+                onPressed: (){},
+              )
+            ],
+          )
+          
         )
       ];
     } else {
@@ -173,10 +182,9 @@ class _LoginState extends State<Login> {
               RaisedButton(
                 child: Text(
                   "Register",
-                  style: TextStyle(color: Colors.white),
                 ),
                 onPressed: validateAndSubmit,
-              )
+              ),
             ],
           ),
         )

@@ -6,7 +6,7 @@ class LoginClipper extends CustomClipper<Path> {
     var path = new Path();
 
     path.lineTo(0.0, size.height / 2);
-    path.lineTo(size.width + 125, 0.0);
+    path.lineTo(size.width + 150, 0.0);
     path.close();
     return path;
   }
