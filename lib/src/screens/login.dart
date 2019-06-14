@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/auth.dart';
 import 'package:cskitchen/src/clipArt.dart';
@@ -44,9 +46,19 @@ class _LoginState extends State<Login> {
         }
         widget.onSignIn();
       } catch (e) {
-        print('Error $e');
+        _detailsSnackbar(e.message);
+        print('${e.message}');
       }
     }
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  void _detailsSnackbar(String message) {
+    final snackBar = SnackBar(
+      content: Text("$message"),
+      duration: Duration(seconds: 3),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   void loginPage() {
@@ -66,33 +78,54 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        ClipPath(
-          child: Container(
-            color: Colors.red.withOpacity(0.6),
+        key: _scaffoldKey,
+        resizeToAvoidBottomPadding: false,
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
+          child: Stack(
+            children: <Widget>[
+              /*BackdropFilter(
+              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: new Container(
+                decoration:
+                    new BoxDecoration(color: Colors.white.withOpacity(0.0)),
+              )),*/
+              Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: buildInputs() + buildButtons(),
+                    ),
+                  ))
+            ],
           ),
-          clipper: LoginClipper(),
-        ),
-        Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: buildInputs() + buildButtons(),
-            ))
-      ],
-    ));
+        ));
   }
 
   List<Widget> buildInputs() {
     if (_formType == FormType.login) {
       return [
+        CircleAvatar(
+            radius: 65,
+            backgroundColor: Colors.white,
+            child: Image(
+              image: AssetImage("assets/cs_logo.png"),
+            )),
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextFormField(
+            style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: 'Email',
-            ),
+                labelText: 'Email',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
             validator: (value) =>
                 value.isEmpty ? "Please input an email" : null,
             onSaved: (value) => _email = value,
@@ -101,8 +134,15 @@ class _LoginState extends State<Login> {
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextFormField(
+            style: TextStyle(color: Colors.white),
             obscureText: true,
-            decoration: InputDecoration(labelText: 'Password'),
+            decoration: InputDecoration(
+                labelText: 'Password',
+                icon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
             validator: (value) =>
                 value.isEmpty ? "Please input a password" : null,
             onSaved: (value) => _password = value,
@@ -111,10 +151,23 @@ class _LoginState extends State<Login> {
       ];
     } else {
       return [
+        CircleAvatar(
+            radius: 65,
+            backgroundColor: Colors.white,
+            child: Image(
+              image: AssetImage("assets/cs_logo.png"),
+            )),
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextFormField(
-            decoration: InputDecoration(labelText: 'Email Address'),
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                labelText: 'Email Address',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
             validator: (value) =>
                 value.isEmpty ? "Please input an email" : null,
             onSaved: (value) => _email = value,
@@ -123,8 +176,31 @@ class _LoginState extends State<Login> {
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextFormField(
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                labelText: 'Phone Number',
+                icon: Icon(
+                  Icons.phone,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
+            validator: (value) =>
+                value.isEmpty ? "Please input an email" : null,
+            onSaved: (value) => _email = value,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30),
+          child: TextFormField(
+            style: TextStyle(color: Colors.white),
             obscureText: true,
-            decoration: InputDecoration(labelText: 'Create Password'),
+            decoration: InputDecoration(
+                labelText: 'Create Password',
+                icon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
             validator: (value) =>
                 value.isEmpty ? "Please input a password" : null,
             onSaved: (value) => _password = value,
@@ -140,28 +216,41 @@ class _LoginState extends State<Login> {
         Padding(
             padding: const EdgeInsets.only(right: 20, top: 10),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     FlatButton(
-                      child: Text("Create account"),
+                      child: Text(
+                        "Create account",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onPressed: () {
                         registerPage();
                       },
                     ),
                     RaisedButton(
+                        elevation: 10,
+                        color: Colors.red[700],
                         child: Text(
                           "Login",
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: validateAndSubmit),
                   ],
                 ),
-                FlatButton(
-                  child: Text("Reset Password"),
-                  onPressed: () {},
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        "Reset Password",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    )
+                  ],
+                ),
               ],
             ))
       ];
@@ -173,12 +262,18 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FlatButton(
-                child: Text("Already have an account? Login"),
+                child: Text(
+                  "Already have an account? Login",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: loginPage,
               ),
               RaisedButton(
+                elevation: 10,
+                color: Colors.red[700],
                 child: Text(
                   "Register",
+                  style: TextStyle(color: Colors.white),
                 ),
                 onPressed: validateAndSubmit,
               ),
