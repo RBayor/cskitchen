@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "493843910301",
+    "firebase_url": "https://cskitchen-app.firebaseio.com",
+    "project_id": "cskitchen-app",
+    "storage_bucket": "cskitchen-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493843910301:android:094e7485d39bedb4",
+        "android_client_info": {
+          "package_name": "com.example.cskitchen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493843910301-gnhkatfkm5tst8ofc8adbrfmamogvna0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUBGfFRnJDT9UC9buLpguIVJ_HMelQEWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493843910301-gnhkatfkm5tst8ofc8adbrfmamogvna0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
