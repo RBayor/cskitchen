@@ -1,8 +1,10 @@
-import 'package:cskitchen/src/auth.dart';
+import 'package:cskitchen/src/logic/auth.dart';
+import 'package:cskitchen/src/logic/clipArt.dart';
 import 'package:flutter/material.dart';
-import 'package:cskitchen/src/screens/menu.dart';
-import 'package:cskitchen/src/screens/cart.dart';
-import 'package:cskitchen/src/screens/profile.dart';
+import 'package:cskitchen/src/screens/homeScreens/menu.dart';
+import 'package:cskitchen/src/screens/homeScreens/cart.dart';
+import 'package:cskitchen/src/screens/homeScreens/profile.dart';
+import 'package:flutter/widgets.dart';
 
 class Home extends StatefulWidget {
   Home({this.auth, this.onSignedOut});
@@ -58,7 +60,14 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: currentPage,
+      body: Stack(
+        children: <Widget>[
+          ClipPath(
+            clipper: GeneralClip(),
+          ),
+          currentPage
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         currentIndex: currentTab,
@@ -99,12 +108,5 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
-  }
-}
-
-class PagOne extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

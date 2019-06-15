@@ -3,7 +3,7 @@ import 'package:cskitchen/src/screens/customWidgets/loginPage.dart';
 import 'package:cskitchen/src/screens/customWidgets/register.dart';
 import 'package:cskitchen/src/screens/customWidgets/resetPassword.dart';
 import 'package:flutter/material.dart';
-import 'package:cskitchen/src/auth.dart';
+import 'package:cskitchen/src/logic/auth.dart';
 
 class Login extends StatefulWidget {
   Login({this.auth, this.onSignIn});

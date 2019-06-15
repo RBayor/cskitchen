@@ -1,4 +1,4 @@
-import 'package:cskitchen/src/auth.dart';
+import 'package:cskitchen/src/logic/auth.dart';
 import 'package:cskitchen/src/screens/home.dart';
 import 'package:cskitchen/src/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class AppRoot extends StatefulWidget {
   _AppRootState createState() => _AppRootState();
 }
 
-enum AuthState { signedIn , notSignedIn }
+enum AuthState { signedIn, notSignedIn }
 
 class _AppRootState extends State<AppRoot> {
   AuthState authState = AuthState.notSignedIn;
@@ -18,20 +18,20 @@ class _AppRootState extends State<AppRoot> {
   @override
   void initState() {
     super.initState();
-    widget.auth.currentUser().then((userId){
+    widget.auth.currentUser().then((userId) {
       setState(() {
         authState = userId == null ? AuthState.notSignedIn : AuthState.signedIn;
       });
     });
   }
 
-  void _signedIn(){
+  void _signedIn() {
     setState(() {
       authState = AuthState.signedIn;
     });
   }
 
-  void _signedOut(){
+  void _signedOut() {
     setState(() {
       authState = AuthState.notSignedIn;
     });
@@ -51,6 +51,8 @@ class _AppRootState extends State<AppRoot> {
           onSignedOut: _signedOut,
         );
     }
-    return Scaffold(body: Text("not signed in error"),);
+    return Scaffold(
+      body: Text("not signed in error"),
+    );
   }
 }
