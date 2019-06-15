@@ -8,7 +8,8 @@ class Cskitchen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.red),
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(color: Colors.red, elevation: 10.0)),
       title: 'Cs Kitchen',
       home: AppRoot(
         auth: Auth(),
