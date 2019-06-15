@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:cskitchen/src/screens/customWidgets/loginPage.dart';
+import 'package:cskitchen/src/screens/customWidgets/register.dart';
+import 'package:cskitchen/src/screens/customWidgets/resetPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/auth.dart';
 
@@ -14,7 +17,7 @@ enum FormType { login, register, resetPass }
 
 class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
-  bool isloading = false;
+  bool isloading = true;
   FormType _formType = FormType.login;
   String _email;
   String _password;
@@ -32,7 +35,7 @@ class _LoginState extends State<Login> {
     if (validateAndSave()) {
       try {
         if (_formType == FormType.login) {
-          print("trying to login");
+          print("trying to login with  $_email and $_password");
           String userId =
               await widget.auth.signInWithEmailAndPassword(_email, _password);
           print('Sigined in as $userId');
@@ -44,20 +47,12 @@ class _LoginState extends State<Login> {
         }
         widget.onSignIn();
       } catch (e) {
-        _detailsSnackbar(e.message);
         print('${e.message}');
       }
     }
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  void _detailsSnackbar(String message) {
-    final snackBar = SnackBar(
-      content: Text("$message"),
-      duration: Duration(seconds: 3),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
 
   void loginPage() {
     formKey.currentState.reset();
@@ -88,275 +83,172 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Image chips;
-
-  @override
-  void initState() {
-    super.initState();
-    chips = Image.asset("assets/chips.jpg");
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    precacheImage(chips.image, context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(image: chips.image, fit: BoxFit.cover)),
-          child: Stack(
-            children: <Widget>[
-              /*BackdropFilter(
-              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: new Container(
-                decoration:
-                    new BoxDecoration(color: Colors.white.withOpacity(0.0)),
-              )),*/
-              Form(
-                  key: formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 100),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: buildInputs() + buildButtons(),
-                    ),
-                  ))
-            ],
+      key: _scaffoldKey,
+      resizeToAvoidBottomPadding: false,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
           ),
-        ));
+          Form(
+              key: formKey,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: buildInputs() + buildButtons(),
+                ),
+              ))
+        ],
+      ),
+    );
   }
 
   List<Widget> buildInputs() {
-    if (_formType == FormType.login) {
-      return [
-        CircleAvatar(
-            radius: 65,
-            backgroundColor: Colors.white,
-            child: Image(
-              image: AssetImage("assets/cs_logo.png"),
-            )),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                labelText: 'Email',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input an email" : null,
-            onSaved: (value) => _email = value,
+    switch (_formType) {
+      case FormType.login:
+        return [
+          CircleAvatar(
+              radius: 65,
+              backgroundColor: Colors.white,
+              child: Image(
+                image: AssetImage("assets/cs_logo.png"),
+              )),
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  labelStyle: TextStyle(color: Colors.white)),
+              validator: (value) =>
+                  value.isEmpty ? "Please input an email" : null,
+              onSaved: (value) => _email = value,
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            obscureText: true,
-            decoration: InputDecoration(
-                labelText: 'Password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input a password" : null,
-            onSaved: (value) => _password = value,
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: 'Password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  labelStyle: TextStyle(color: Colors.white)),
+              validator: (value) =>
+                  value.isEmpty ? "Please input a password" : null,
+              onSaved: (value) => _password = value,
+            ),
           ),
-        ),
-      ];
-    } else if (_formType == FormType.register) {
-      return [
-        CircleAvatar(
-            radius: 65,
-            backgroundColor: Colors.white,
-            child: Image(
-              image: AssetImage("assets/cs_logo.png"),
-            )),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Create New Account",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+        ];
+      case FormType.register:
+        return [
+          CircleAvatar(
+              radius: 65,
+              backgroundColor: Colors.white,
+              child: Image(
+                image: AssetImage("assets/cs_logo.png"),
+              )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Create New Account",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                labelText: 'Email Address',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input an email" : null,
-            onSaved: (value) => _email = value,
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: 'Email Address',
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  labelStyle: TextStyle(color: Colors.white)),
+              validator: (value) =>
+                  value.isEmpty ? "Please input an email" : null,
+              onSaved: (value) => _email = value,
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            obscureText: true,
-            decoration: InputDecoration(
-                labelText: 'Create Password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input a password" : null,
-            onSaved: (value) => _password = value,
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: 'Create Password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  labelStyle: TextStyle(color: Colors.white)),
+              validator: (value) =>
+                  value.isEmpty ? "Please input a password" : null,
+              onSaved: (value) => _password = value,
+            ),
           ),
-        ),
-      ];
-    } else {
-      return [
-        CircleAvatar(
-            radius: 65,
-            backgroundColor: Colors.white,
-            child: Image(
-              image: AssetImage("assets/cs_logo.png"),
-            )),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Reset Password",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+        ];
+      case FormType.resetPass:
+        return [
+          CircleAvatar(
+              radius: 65,
+              backgroundColor: Colors.white,
+              child: Image(
+                image: AssetImage("assets/cs_logo.png"),
+              )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Reset Password",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                labelText: 'Email Address',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input an email" : null,
-            onSaved: (value) => _email = value,
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: 'Email Address',
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  labelStyle: TextStyle(color: Colors.white)),
+              validator: (value) =>
+                  value.isEmpty ? "Please input an email" : null,
+              onSaved: (value) => _email = value,
+            ),
           ),
-        ),
-      ];
+        ];
+      default:
+        return [null];
     }
   }
 
   List<Widget> buildButtons() {
-    if (_formType == FormType.login) {
-      return [
-        Padding(
-            padding: const EdgeInsets.only(right: 20, top: 10),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text(
-                        "Create account",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        registerPage();
-                      },
-                    ),
-                    RaisedButton(
-                        elevation: 10,
-                        color: Colors.red[700],
-                        child: Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: validateAndSubmit),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text(
-                        "Reset Password",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: resetPasswordForm,
-                    )
-                  ],
-                ),
-              ],
-            ))
-      ];
-    } else if (_formType == FormType.register) {
-      return [
-        Padding(
-          padding: const EdgeInsets.only(right: 20, top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              FlatButton(
-                child: Text(
-                  "Already have an account? Login",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: loginPage,
-              ),
-              RaisedButton(
-                elevation: 10,
-                color: Colors.red[700],
-                child: Text(
-                  "Register",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: validateAndSubmit,
-              ),
-            ],
-          ),
-        )
-      ];
-    } else {
-      return [
-        Padding(
-          padding: const EdgeInsets.only(right: 20, top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              FlatButton(
-                child: Text(
-                  "Login",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: loginPage,
-              ),
-              RaisedButton(
-                elevation: 10,
-                color: Colors.red[700],
-                child: Text(
-                  "Reset",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: resetPassword,
-              ),
-            ],
-          ),
-        )
-      ];
+    switch (_formType) {
+      case FormType.login:
+        return [loginBtn(registerPage, validateAndSubmit, resetPasswordForm)];
+      case FormType.register:
+        return [registerBtn(loginPage, validateAndSubmit)];
+      case FormType.resetPass:
+        return [resetPasswordBtn(loginPage, resetPassword)];
+      default:
+        return [null];
     }
   }
 }
