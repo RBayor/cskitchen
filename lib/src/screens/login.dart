@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/auth.dart';
-import 'package:cskitchen/src/clipArt.dart';
 
 class Login extends StatefulWidget {
   Login({this.auth, this.onSignIn});
@@ -12,7 +10,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-enum FormType { login, register }
+enum FormType { login, register, resetPass }
 
 class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
@@ -38,7 +36,7 @@ class _LoginState extends State<Login> {
           String userId =
               await widget.auth.signInWithEmailAndPassword(_email, _password);
           print('Sigined in as $userId');
-        } else {
+        } else if (_formType == FormType.register) {
           print("trying to register");
           String userId = await widget.auth
               .createUserWithEmailAndPassword(_email, _password);
@@ -75,6 +73,35 @@ class _LoginState extends State<Login> {
     });
   }
 
+  void resetPasswordForm() {
+    formKey.currentState.reset();
+    setState(() {
+      _formType = FormType.resetPass;
+    });
+  }
+
+  void resetPassword() async {
+    if (validateAndSave()) {
+      await widget.auth.resetPassword(_email).then((val) {
+        print("email sent");
+      });
+    }
+  }
+
+  Image chips;
+
+  @override
+  void initState() {
+    super.initState();
+    chips = Image.asset("assets/chips.jpg");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(chips.image, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +109,7 @@ class _LoginState extends State<Login> {
         resizeToAvoidBottomPadding: false,
         body: Container(
           decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
+              image: DecorationImage(image: chips.image, fit: BoxFit.cover)),
           child: Stack(
             children: <Widget>[
               /*BackdropFilter(
@@ -149,7 +175,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       ];
-    } else {
+    } else if (_formType == FormType.register) {
       return [
         CircleAvatar(
             radius: 65,
@@ -158,19 +184,10 @@ class _LoginState extends State<Login> {
               image: AssetImage("assets/cs_logo.png"),
             )),
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                labelText: 'Email Address',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                labelStyle: TextStyle(color: Colors.white)),
-            validator: (value) =>
-                value.isEmpty ? "Please input an email" : null,
-            onSaved: (value) => _email = value,
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Create New Account",
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
         Padding(
@@ -178,9 +195,9 @@ class _LoginState extends State<Login> {
           child: TextFormField(
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-                labelText: 'Phone Number',
+                labelText: 'Email Address',
                 icon: Icon(
-                  Icons.phone,
+                  Icons.person,
                   color: Colors.white,
                 ),
                 labelStyle: TextStyle(color: Colors.white)),
@@ -204,6 +221,38 @@ class _LoginState extends State<Login> {
             validator: (value) =>
                 value.isEmpty ? "Please input a password" : null,
             onSaved: (value) => _password = value,
+          ),
+        ),
+      ];
+    } else {
+      return [
+        CircleAvatar(
+            radius: 65,
+            backgroundColor: Colors.white,
+            child: Image(
+              image: AssetImage("assets/cs_logo.png"),
+            )),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Reset Password",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30),
+          child: TextFormField(
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                labelText: 'Email Address',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                labelStyle: TextStyle(color: Colors.white)),
+            validator: (value) =>
+                value.isEmpty ? "Please input an email" : null,
+            onSaved: (value) => _email = value,
           ),
         ),
       ];
@@ -247,14 +296,14 @@ class _LoginState extends State<Login> {
                         "Reset Password",
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: resetPasswordForm,
                     )
                   ],
                 ),
               ],
             ))
       ];
-    } else {
+    } else if (_formType == FormType.register) {
       return [
         Padding(
           padding: const EdgeInsets.only(right: 20, top: 10),
@@ -276,6 +325,33 @@ class _LoginState extends State<Login> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: validateAndSubmit,
+              ),
+            ],
+          ),
+        )
+      ];
+    } else {
+      return [
+        Padding(
+          padding: const EdgeInsets.only(right: 20, top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: loginPage,
+              ),
+              RaisedButton(
+                elevation: 10,
+                color: Colors.red[700],
+                child: Text(
+                  "Reset",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: resetPassword,
               ),
             ],
           ),
