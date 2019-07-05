@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cskitchen/src/screens/homeScreens/materialPages/fooditem.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -78,47 +79,64 @@ class _MenuState extends State<Menu> {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data.length,
                         itemBuilder: (_, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Card(
-                              elevation: 10.0,
-                              clipBehavior: Clip.antiAlias,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              child: Container(
-                                height: 250,
-                                width: MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("assets/fooditem.jpg"),
-                                        fit: BoxFit.cover)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        "${snapshot.data[index].data["food"]}",
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.white),
+                          String imgUrl = snapshot.data[index].data["img"];
+                          return InkWell(
+                            onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Fooditem(
+                                            snapshot.data[index].data["food"],
+                                            snapshot.data[index].data["price"],
+                                            imgUrl,
+                                            snapshot.data[index]
+                                                .data["foodDetails"],
+                                          )),
+                                ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Card(
+                                elevation: 10.0,
+                                clipBehavior: Clip.antiAlias,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0)),
+                                child: Container(
+                                  height: 250,
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              snapshot.data[index].data["img"]),
+                                          fit: BoxFit.cover)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          "${snapshot.data[index].data["food"]}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, bottom: 10),
-                                        child: RaisedButton(
-                                          onPressed: () {},
-                                          color: Colors.greenAccent[700],
-                                          child: Text(
-                                            "${snapshot.data[index].data["price"]}",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                        ))
-                                  ],
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, bottom: 10),
+                                          child: RaisedButton(
+                                            onPressed: () {},
+                                            color: Colors.greenAccent[700],
+                                            child: Text(
+                                              "${snapshot.data[index].data["price"]}",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            ),
+                                          ))
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
