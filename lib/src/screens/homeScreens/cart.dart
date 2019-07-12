@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cskitchen/src/components/cartProducts.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -8,29 +9,28 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView(
-        children: <Widget>[
-          Center(
-              child: Card(
-            elevation: 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ListTile(
-                    title: Center(child: Text("Food item")),
-                    subtitle: Center(child: Text("Ghs 20")),
-                  ),
-                )
-              ],
-            ),
-          )),
-        ],
+    return Scaffold(
+      body: CartProducts(),
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                child: ListTile(
+              title: Text("Total: Ghs 50"),
+            )),
+            Expanded(
+              child: MaterialButton(
+                onPressed: () {},
+                child: Text(
+                  "Pay",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.redAccent,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

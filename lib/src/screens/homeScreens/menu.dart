@@ -48,8 +48,7 @@ class _MenuState extends State<Menu> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0)),
                     child: Container(
-                      height: 250,
-                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.height / 3,
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
@@ -64,7 +63,7 @@ class _MenuState extends State<Menu> {
                             child: Text(
                               "${snapshot.data[index].data["food"]}",
                               style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                                  TextStyle(fontSize: 25, color: Colors.white),
                             ),
                           ),
                           Padding(

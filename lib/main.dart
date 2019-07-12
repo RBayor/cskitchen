@@ -1,4 +1,4 @@
-import 'package:cskitchen/src/logic/auth.dart';
+import 'package:cskitchen/src/components/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/screens/appRoot.dart';
 

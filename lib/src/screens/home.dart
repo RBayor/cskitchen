@@ -1,5 +1,4 @@
-import 'package:cskitchen/src/logic/auth.dart';
-import 'package:cskitchen/src/logic/clipArt.dart';
+import 'package:cskitchen/src/components/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/screens/homeScreens/menu.dart';
 import 'package:cskitchen/src/screens/homeScreens/cart.dart';
@@ -61,12 +60,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Stack(
-        children: <Widget>[
-          ClipPath(
-            clipper: GeneralClip(),
-          ),
-          currentPage
-        ],
+        children: <Widget>[currentPage],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
@@ -104,7 +98,7 @@ class _HomeState extends State<Home> {
               title: Text(
                 "Profile",
                 style: TextStyle(color: Colors.white),
-              ))
+              )),
         ],
       ),
     );
