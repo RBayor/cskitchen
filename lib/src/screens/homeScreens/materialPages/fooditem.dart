@@ -24,38 +24,54 @@ class _FooditemState extends State<Fooditem> {
             backgroundColor: Colors.transparent,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              color: Colors.redAccent,
+              color: Colors.black,
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
           Center(
             child: Container(
               height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.width - 50,
+              width: MediaQuery.of(context).size.width - 10,
               decoration: BoxDecoration(
                   image:
                       DecorationImage(image: NetworkImage(widget.foodImage))),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "${widget.foodDetails}",
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 100,
-          ),
-          Center(
-              child: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.shopping_cart),
-          ))
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "GHS ${widget.price}",
+                  style: TextStyle(fontSize: 40, fontFamily: "Cookie"),
+                ),
+              )),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${widget.food}",
+                  style: TextStyle(fontSize: 35, fontFamily: "Caveat Bold"),
+                ),
+              )),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${widget.foodDetails}",
+                  style: TextStyle(fontSize: 20, fontFamily: "kalam Regular"),
+                ),
+              )),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Add to cart",
+        child: Icon(Icons.add_shopping_cart),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

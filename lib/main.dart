@@ -9,7 +9,9 @@ class Cskitchen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          appBarTheme: AppBarTheme(color: Colors.red, elevation: 10.0)),
+          appBarTheme:
+              AppBarTheme(color: Colors.redAccent[700], elevation: 10.0),
+          accentColor: Colors.redAccent),
       title: 'Cs Kitchen',
       home: AppRoot(
         auth: Auth(),

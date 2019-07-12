@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         title: Text(
           "Cs Kitchen",
-          style: TextStyle(fontSize: 30, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         actions: <Widget>[
           IconButton(
