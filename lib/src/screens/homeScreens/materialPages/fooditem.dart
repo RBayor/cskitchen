@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Fooditem extends StatefulWidget {
   Fooditem(this.food, this.price, this.foodImage, this.foodDetails);
@@ -12,6 +15,46 @@ class Fooditem extends StatefulWidget {
 }
 
 class _FooditemState extends State<Fooditem> {
+  List cart = [];
+  Future _addToCart(
+      String foodName, int foodPrice, int foodQuantity, String foodImg) async {
+    _storeCart(cart);
+    var myCart = [
+      {
+        "food": foodName,
+        "price": foodPrice,
+        "quantity": foodQuantity,
+        "img": foodImg
+      }
+    ];
+    print(myCart);
+    cart.add(myCart);
+
+    print(cart);
+
+    // _storeCart(cart);
+
+/*    prefs.clear();
+    if (cart == null) {
+      cart.addAll(myCart);
+    }
+    cart.add(prefs.getStringList("cart") ?? []);
+    cart.add(myCart);
+
+    print("This is the cart  $cart");
+    await prefs.setString("cart", cart.toString()).then((onValue) {
+      //cart = (prefs.getString("cart") ?? []);
+      // print("\n\n\nDecoded Cart  $cart");
+    });*/
+
+    //print("\n\n\nThis is the cart  ${json.decode(cart)}");
+  }
+
+  _storeCart(List cart) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +112,9 @@ class _FooditemState extends State<Fooditem> {
       floatingActionButton: FloatingActionButton(
         tooltip: "Add to cart",
         child: Icon(Icons.add_shopping_cart),
-        onPressed: () {},
+        onPressed: () {
+          _addToCart(widget.food, widget.price, 5, widget.foodImage);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
