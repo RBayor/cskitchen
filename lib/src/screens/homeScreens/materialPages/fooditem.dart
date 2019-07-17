@@ -3,10 +3,27 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Purchase {
+  final String food;
+  final String price;
+  final String quantity;
+  final String img;
+  final String foodDetails;
+
+  Purchase(this.food, this.price, this.quantity, this.img, this.foodDetails);
+
+  Purchase.fromJson(Map<String, dynamic> json)
+      : food = json["foodName"],
+        price = json["foodPrice"],
+        quantity = json["foodQuantity"],
+        img = json["foodImg"],
+        foodDetails = json["foodDetails"];
+}
+
 class Fooditem extends StatefulWidget {
   Fooditem(this.food, this.price, this.foodImage, this.foodDetails);
   final String food;
-  final int price;
+  var price;
   final String foodImage;
   final foodDetails;
 
@@ -15,42 +32,39 @@ class Fooditem extends StatefulWidget {
 }
 
 class _FooditemState extends State<Fooditem> {
-  List cart = [];
-  Future _addToCart(
-      String foodName, int foodPrice, int foodQuantity, String foodImg) async {
-    _storeCart(cart);
-    var myCart = [
-      {
-        "food": foodName,
-        "price": foodPrice,
-        "quantity": foodQuantity,
-        "img": foodImg
-      }
-    ];
-    print(myCart);
-    cart.add(myCart);
+  List<String> cart = [];
+  List<int> foodQuantity = [1, 2, 3, 4, 5];
+  int _selectedQuantity = 1;
 
-    print(cart);
+  Future _addToCart(String foodName, var foodPrice, int foodQuantity,
+      String foodImg, String foodDetails) async {
+    var myCart =
+        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails"}';
 
-    // _storeCart(cart);
+    Map cartMap = jsonDecode(myCart);
+    var cart = Purchase.fromJson(cartMap);
+    print("Adding ${cart.quantity} ${cart.food}");
 
-/*    prefs.clear();
-    if (cart == null) {
-      cart.addAll(myCart);
-    }
-    cart.add(prefs.getStringList("cart") ?? []);
-    cart.add(myCart);
-
-    print("This is the cart  $cart");
-    await prefs.setString("cart", cart.toString()).then((onValue) {
-      //cart = (prefs.getString("cart") ?? []);
-      // print("\n\n\nDecoded Cart  $cart");
-    });*/
-
-    //print("\n\n\nThis is the cart  ${json.decode(cart)}");
+    await _storeCart("food", cart.food);
+    await _storeCart("quantity", cart.quantity);
+    _storeCart("price", cart.price);
   }
 
-  _storeCart(List cart) async {
+  _storeCart(String key, String val) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var cartPurchase = (prefs.getStringList(key) ?? []);
+
+    if (cartPurchase.isEmpty) {
+      await prefs.setStringList(key, [val]);
+    } else {
+      cartPurchase.addAll([val]);
+      await prefs.setStringList(key, cartPurchase);
+    }
+    setState(() {});
+    print("Current $key ${prefs.getStringList(key)}");
+  }
+
+  _clearPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
@@ -81,7 +95,7 @@ class _FooditemState extends State<Fooditem> {
             ),
           ),
           Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 20, top: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -90,7 +104,7 @@ class _FooditemState extends State<Fooditem> {
                 ),
               )),
           Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 20, top: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -99,7 +113,7 @@ class _FooditemState extends State<Fooditem> {
                 ),
               )),
           Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 20, top: 15),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -107,13 +121,49 @@ class _FooditemState extends State<Fooditem> {
                   style: TextStyle(fontSize: 20, fontFamily: "kalam Regular"),
                 ),
               )),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                  width: 50,
+                  height: 50,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<int>(
+                      value: _selectedQuantity,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedQuantity = newValue;
+                        });
+                      },
+                      items: foodQuantity.map((quantity) {
+                        return DropdownMenuItem(
+                          child: Text(
+                            "$quantity",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent),
+                          ),
+                          value: quantity,
+                        );
+                      }).toList(),
+                    ),
+                  )),
+            ),
+          ),
+          RaisedButton(
+            child: Text("Clear Prefs"),
+            onPressed: _clearPrefs,
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Add to cart",
         child: Icon(Icons.add_shopping_cart),
         onPressed: () {
-          _addToCart(widget.food, widget.price, 5, widget.foodImage);
+          _addToCart(widget.food, widget.price, _selectedQuantity,
+              widget.foodImage, widget.foodDetails);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

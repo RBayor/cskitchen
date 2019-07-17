@@ -31,15 +31,15 @@ class _MenuState extends State<Menu> {
               String imgUrl = snapshot.data[index].data["img"];
               return InkWell(
                 onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Fooditem(
-                                snapshot.data[index].data["food"],
-                                snapshot.data[index].data["price"],
-                                imgUrl,
-                                snapshot.data[index].data["foodDetails"],
-                              )),
-                    ),
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Fooditem(
+                            snapshot.data[index].data["food"],
+                            snapshot.data[index].data["price"],
+                            imgUrl,
+                            snapshot.data[index].data["foodDetails"],
+                          )),
+                ),
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Card(

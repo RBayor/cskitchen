@@ -1,5 +1,5 @@
 name: cskitchen
-description: A new Flutter project.
+description: A restaurant management app.
 
 version: 1.0.0+1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
+
   cupertino_icons: ^0.1.2
   firebase_auth: ^0.11.1+6
   cloud_firestore: ^0.12.5+1
