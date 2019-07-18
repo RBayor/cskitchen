@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
                           Icons.fastfood,
                           color: Colors.redAccent,
                         ),
-                        title: Text("My order"),
+                        title: Text("My orders"),
                       ),
                       Divider(),
                       ListTile(
@@ -131,7 +131,7 @@ class _ProfileState extends State<Profile> {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Ghs 40.00",
+                        "Ghs 0.00",
                         style: TextStyle(fontSize: 18),
                       )
                     ],

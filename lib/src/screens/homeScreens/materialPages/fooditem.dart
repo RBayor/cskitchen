@@ -47,7 +47,7 @@ class _FooditemState extends State<Fooditem> {
 
     await _storeCart("food", cart.food);
     await _storeCart("quantity", cart.quantity);
-    _storeCart("price", cart.price);
+    await _storeCart("price", cart.price);
   }
 
   _storeCart(String key, String val) async {

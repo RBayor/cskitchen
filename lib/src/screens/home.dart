@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     menu = Menu();
-    cart = Cart();
+    cart = Cart(Auth());
     profile = Profile();
     pages = [menu, cart, profile];
     currentPage = menu;
