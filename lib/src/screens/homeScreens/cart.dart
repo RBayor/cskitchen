@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cskitchen/src/components/orders.dart';
 import 'package:cskitchen/src/components/auth.dart';
-import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderItems {
   final Map order;
@@ -84,7 +82,7 @@ class _CartState extends State<Cart> {
           "quantity": quantity[i],
           "price": price[i]
         };
-        OrderItems myOrder = OrderItems(order: order);
+        //OrderItems myOrder = OrderItems(order: order);
         print("user: $id orders $order");
 
         Firestore.instance.runTransaction((Transaction tx) async {

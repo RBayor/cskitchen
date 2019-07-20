@@ -17,7 +17,7 @@ enum FormType { login, register, resetPass }
 
 class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
-  bool isloading = true;
+  bool isloading = false;
   FormType _formType = FormType.login;
   String _email;
   String _password;
@@ -34,6 +34,8 @@ class _LoginState extends State<Login> {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
+        isloading = true;
+        setState(() {});
         if (_formType == FormType.login) {
           print("trying to login with  $_email and $_password");
           String userId =
@@ -47,6 +49,9 @@ class _LoginState extends State<Login> {
         }
         widget.onSignIn();
       } catch (e) {
+        isloading = false;
+        showAlertDialog(context, e.message);
+        setState(() {});
         print('${e.message}');
       }
     }
@@ -76,37 +81,84 @@ class _LoginState extends State<Login> {
   }
 
   void resetPassword() async {
+    isloading = true;
     if (validateAndSave()) {
-      await widget.auth.resetPassword(_email).then((val) {
-        print("email sent");
-      });
+      try {
+        await widget.auth.resetPassword(_email).then((val) {
+          print("");
+          isloading = false;
+          showAlertDialog(context, "Reset email Sent");
+        });
+      } catch (e) {
+        isloading = false;
+        showAlertDialog(context, e.message);
+      }
     }
+  }
+
+  showAlertDialog(BuildContext context, msg) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Something went wrong"),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
-          ),
-          Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: buildInputs() + buildButtons(),
-                ),
-              ))
-        ],
-      ),
-    );
+    if (isloading) {
+      return Scaffold(
+          body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ));
+    } else {
+      return Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomPadding: false,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/chips.jpg"),
+                      fit: BoxFit.cover)),
+            ),
+            Form(
+                key: formKey,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: buildInputs() + buildButtons(),
+                  ),
+                ))
+          ],
+        ),
+      );
+    }
   }
 
   List<Widget> buildInputs() {

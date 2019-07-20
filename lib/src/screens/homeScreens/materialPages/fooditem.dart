@@ -38,16 +38,19 @@ class _FooditemState extends State<Fooditem> {
 
   Future _addToCart(String foodName, var foodPrice, int foodQuantity,
       String foodImg, String foodDetails) async {
-    var myCart =
-        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails"}';
+    try {
+      var myCart =
+          '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails"}';
 
-    Map cartMap = jsonDecode(myCart);
-    var cart = Purchase.fromJson(cartMap);
-    print("Adding ${cart.quantity} ${cart.food}");
+      Map cartMap = jsonDecode(myCart);
+      var cart = Purchase.fromJson(cartMap);
+      print("Adding ${cart.quantity} ${cart.food}");
 
-    await _storeCart("food", cart.food);
-    await _storeCart("quantity", cart.quantity);
-    await _storeCart("price", cart.price);
+      await _storeCart("food", cart.food);
+      await _storeCart("quantity", cart.quantity);
+      await _storeCart("price", cart.price);
+      showAlertDialog(context, "Order", "${cart.food} has been added to cart");
+    } catch (e) {}
   }
 
   _storeCart(String key, String val) async {
@@ -67,6 +70,31 @@ class _FooditemState extends State<Fooditem> {
   _clearPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    showAlertDialog(context, "", "Cart Cleared");
+  }
+
+  showAlertDialog(BuildContext context, title, msg) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -153,7 +181,7 @@ class _FooditemState extends State<Fooditem> {
             ),
           ),
           RaisedButton(
-            child: Text("Clear Prefs"),
+            child: Text("Clear Cart"),
             onPressed: _clearPrefs,
           )
         ],

@@ -12,8 +12,8 @@ class CartDb {
 
   Future<void> placeOrder(var order, var id) async {
     if (isLoggedIn()) {
-      DocumentReference orderRef =
-          Firestore.instance.collection("orders").document(id);
+      // DocumentReference orderRef =
+      //    Firestore.instance.collection("orders").document(id);
       Firestore.instance.runTransaction((Transaction tx) async {});
     }
   }
