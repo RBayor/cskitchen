@@ -4,7 +4,8 @@ import 'package:cskitchen/src/components/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderItems {
-  final Map order;
+  List order;
+  DateTime timeStamp;
   OrderItems({@required this.order});
 
   Map<String, dynamic> toJson() => {"order": order};
@@ -20,7 +21,8 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   var food = [], quantity = [], price = [];
   var totalPrice = 0.0;
-  int orderNumber;
+  List<Map> myOrder = [];
+  List prevOrder;
 
   @override
   void initState() {
@@ -58,38 +60,59 @@ class _CartState extends State<Cart> {
     );
   }
 
-  orderNum() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    orderNumber = prefs.getInt("orderNumber");
-    if (orderNumber == null) {
-      orderNumber = 1;
-    } else {
-      orderNumber += 1;
-    }
-    prefs.setInt("orderNumber", orderNumber);
-    setState(() {});
-    print(orderNumber);
+  getDbOrder(id) async {
+    DocumentReference db = Firestore.instance.collection("orders").document(id);
+
+    await db.get().then((doc) {
+      if (doc.exists) {
+        prevOrder = doc.data["order"];
+      }
+    });
   }
 
   placeCartOrder() async {
-    await orderNum();
     var id = await widget.auth.currentUser();
-    var dbOrder = Firestore.instance.collection("orders").document(id);
+    var db = Firestore.instance.collection("orders").document(id);
+    Map order;
+    await getDbOrder(id);
+
+    if (prevOrder != null) {
+      prevOrder.forEach((item) {
+        myOrder.add(item);
+      });
+    }
     try {
       for (int i = 0; i < food.length; i++) {
-        var order = {
+        order = {
           "food": food[i],
           "quantity": quantity[i],
-          "price": price[i]
+          "price": price[i],
+          "timeStamp": DateTime.now()
         };
-        //OrderItems myOrder = OrderItems(order: order);
-        print("user: $id orders $order");
-
-        Firestore.instance.runTransaction((Transaction tx) async {
-          tx.set(dbOrder, {"Order $orderNumber": order});
-        });
+        //print("Adding $order");
+        myOrder.add(order);
       }
+      print("\n\nMy order is $myOrder");
+      OrderItems orderItems = OrderItems(order: myOrder);
+      db.setData(orderItems.toJson()).then((val) {
+        clearItems();
+        setState(() {});
+      });
     } catch (e) {}
+  }
+
+  clearItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      prefs.clear();
+      food.clear();
+      quantity.clear();
+      price.clear();
+      myOrder.clear();
+      computeOrder();
+    } catch (e) {
+      print(e.message);
+    }
   }
 
   Future getCartItems() async {

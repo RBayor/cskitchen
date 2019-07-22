@@ -23,7 +23,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.7.2+1
 
 flutter_icons:
-  image_path: "assets/cs_logo.png"
+  image_path: "assets/cs_icon.png"
   android: true
   ios: true
 
@@ -35,6 +35,7 @@ flutter:
     - assets/cs_logo.png
     - assets/chips.jpg
     - assets/avatar.png
+    - assets/cs_icon.png
 
   fonts: 
     - family: Indie
