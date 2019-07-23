@@ -23,7 +23,7 @@ class Purchase {
 class Fooditem extends StatefulWidget {
   Fooditem(this.food, this.price, this.foodImage, this.foodDetails);
   final String food;
-  var price;
+  final price;
   final String foodImage;
   final foodDetails;
 
@@ -83,6 +83,7 @@ class _FooditemState extends State<Fooditem> {
 
     AlertDialog alert = AlertDialog(
       title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Text(msg),
       actions: [
         okButton,

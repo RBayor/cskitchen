@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
         widget.onSignIn();
       } catch (e) {
         isloading = false;
-        showAlertDialog(context, e.message);
+        showAlertDialog(context, "Something went wrong!", e.message.toString());
         setState(() {});
         print('${e.message}');
       }
@@ -87,16 +87,16 @@ class _LoginState extends State<Login> {
         await widget.auth.resetPassword(_email).then((val) {
           print("");
           isloading = false;
-          showAlertDialog(context, "Reset email Sent");
+          showAlertDialog(context, "", "Reset email Sent");
         });
       } catch (e) {
         isloading = false;
-        showAlertDialog(context, e.message);
+        showAlertDialog(context, "Something went wrong!", e.message.toString());
       }
     }
   }
 
-  showAlertDialog(BuildContext context, msg) {
+  showAlertDialog(BuildContext context, String title, String msg) {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
@@ -105,7 +105,8 @@ class _LoginState extends State<Login> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text("Something went wrong"),
+      title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Text(msg),
       actions: [
         okButton,

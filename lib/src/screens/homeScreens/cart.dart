@@ -60,6 +60,60 @@ class _CartState extends State<Cart> {
     );
   }
 
+  showAlertDialog(BuildContext context, title, msg) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showPaymentOptionDialog(BuildContext context, title, msg) {
+    Widget payOnDelivery = FlatButton(
+      child: Text("Pay on Delivery"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget payNow = FlatButton(
+      child: Text("Pay Now"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      content: Text(msg),
+      actions: [payOnDelivery, payNow],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   getDbOrder(id) async {
     DocumentReference db = Firestore.instance.collection("orders").document(id);
 
@@ -71,6 +125,10 @@ class _CartState extends State<Cart> {
   }
 
   placeCartOrder() async {
+    /*   if (food != null) {
+      await showPaymentOptionDialog(
+          context, "Payment", "How would you like to pay?");
+    }*/
     var id = await widget.auth.currentUser();
     var db = Firestore.instance.collection("orders").document(id);
     Map order;
@@ -98,7 +156,10 @@ class _CartState extends State<Cart> {
         clearItems();
         setState(() {});
       });
-    } catch (e) {}
+      showAlertDialog(context, "", "Your order has been placed!");
+    } catch (e) {
+      showAlertDialog(context, "", "Nothing in cart");
+    }
   }
 
   clearItems() async {
