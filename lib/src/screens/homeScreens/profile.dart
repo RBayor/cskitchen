@@ -1,6 +1,7 @@
 import 'package:cskitchen/src/components/auth.dart';
+import 'package:cskitchen/src/screens/user/myOrders.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   Profile({this.auth});
@@ -43,7 +44,6 @@ class _ProfileState extends State<Profile> {
         child: TextFormField(
           decoration: InputDecoration(labelText: "New Phone Number"),
           onSaved: (value) => _phoneNum = int.parse(value),
-          // validator: (value) => value.isEmpty ? "Please input an email" : null,
         ),
       ),
       actions: [cancelBtn, submitBtn],
@@ -76,7 +76,11 @@ class _ProfileState extends State<Profile> {
                   child: ListView(
                     children: <Widget>[
                       ListTile(
-                        onTap: () {},
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PreviousOrders(widget.auth))),
                         leading: Icon(
                           Icons.fastfood,
                           color: Colors.redAccent,

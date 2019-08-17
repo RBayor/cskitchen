@@ -125,10 +125,6 @@ class _CartState extends State<Cart> {
   }
 
   placeCartOrder() async {
-    /*   if (food != null) {
-      await showPaymentOptionDialog(
-          context, "Payment", "How would you like to pay?");
-    }*/
     var id = await widget.auth.currentUser();
     var db = Firestore.instance.collection("orders").document(id);
     Map order;
