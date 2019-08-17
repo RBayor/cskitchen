@@ -6,6 +6,7 @@ abstract class BaseAuth {
   Future<String> currentUser();
   Future<void> signOut();
   Future<void> resetPassword(String email);
+  setProfileImage();
 }
 
 class Auth implements BaseAuth {
@@ -39,4 +40,6 @@ class Auth implements BaseAuth {
   Future<void> resetPassword(String email) async {
     return await firebaseAuth.sendPasswordResetEmail(email: email.trim());
   }
+
+  Future setProfileImage() async {}
 }

@@ -1,11 +1,62 @@
+import 'package:cskitchen/src/components/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
+  Profile({this.auth});
+  final BaseAuth auth;
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final formKey = GlobalKey<FormState>();
+  int _phoneNumber;
+  addPhoneNumber(BuildContext context, title) {
+    int _phoneNum;
+    Widget submitBtn = RaisedButton(
+      child: Text(
+        "OK",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        formKey.currentState.save();
+        setState(() {
+          _phoneNumber = _phoneNum;
+        });
+        print(_phoneNum);
+        Navigator.of(context).pop();
+      },
+    );
+    Widget cancelBtn = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+          decoration: InputDecoration(labelText: "New Phone Number"),
+          onSaved: (value) => _phoneNum = int.parse(value),
+          // validator: (value) => value.isEmpty ? "Please input an email" : null,
+        ),
+      ),
+      actions: [cancelBtn, submitBtn],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -105,14 +156,21 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.phone,
-                      color: Colors.redAccent,
+                    GestureDetector(
+                      onTap: () {
+                        addPhoneNumber(context, "Phone Number");
+                      },
+                      child: Icon(
+                        Icons.phone,
+                        color: Colors.redAccent,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 15),
                       child: Text(
-                        "0540000001",
+                        _phoneNumber == null
+                            ? "054 000 0000"
+                            : "0${_phoneNumber.toString()}",
                         style: TextStyle(
                             fontSize: 18, fontFamily: "kalam Regular"),
                       ),
