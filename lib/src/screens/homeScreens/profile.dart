@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:cskitchen/src/screens/user/myOrders.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
 
@@ -43,7 +45,10 @@ class _ProfileState extends State<Profile> {
         key: formKey,
         child: TextFormField(
           decoration: InputDecoration(labelText: "New Phone Number"),
-          onSaved: (value) => _phoneNum = int.parse(value),
+          onSaved: (value) {
+            _phoneNum = int.parse(value);
+            setPhoneNumber();
+          },
         ),
       ),
       actions: [cancelBtn, submitBtn],
@@ -55,6 +60,15 @@ class _ProfileState extends State<Profile> {
         return alert;
       },
     );
+  }
+
+  setPhoneNumber() async {
+    var id = await widget.auth.currentUser();
+    var db = Firestore.instance.collection("orders").document(id);
+
+    /*db.updateData(
+      {"phone": _phoneNumber},
+    );*/
   }
 
   @override

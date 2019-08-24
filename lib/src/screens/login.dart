@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:cskitchen/src/screens/customWidgets/loginPage.dart';
 import 'package:cskitchen/src/screens/customWidgets/register.dart';
-import 'package:cskitchen/src/screens/customWidgets/resetPassword.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/components/auth.dart';
 
@@ -13,14 +13,92 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-enum FormType { login, register, resetPass }
+enum FormType { login, register }
 
 class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
   bool isloading = false;
   FormType _formType = FormType.login;
-  String _email;
-  String _password;
+  String phoneNo;
+  String smsCode;
+  String verificationId;
+
+  Future<void> verifyPhone() async {
+    validateAndSave();
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+      this.verificationId = verId;
+    };
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential credential) {
+      print("verified");
+    };
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException exception) {
+      print("${exception.message}");
+    };
+
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
+      this.verificationId = verId;
+    };
+    print("Phone is $phoneNo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: this.phoneNo,
+      codeAutoRetrievalTimeout: autoRetrieve,
+      codeSent: smsCodeSent,
+      timeout: const Duration(seconds: 10),
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+    );
+    //smsCodeDialog(context);
+  }
+
+  Future<bool> smsCodeDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Enter Verification Code"),
+            content: TextField(
+              onChanged: (value) {
+                this.smsCode = value;
+              },
+            ),
+            contentPadding: EdgeInsets.all(10.0),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Done"),
+                onPressed: () {
+                  FirebaseAuth.instance.currentUser().then((user) {
+                    print("Current user is $user !!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    if (user != null) {
+                      Navigator.of(context).pop();
+                      print("Signed in as $user");
+                      widget.onSignIn();
+                    } else {
+                      Navigator.of(context).pop();
+                      signIn();
+                    }
+                  });
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  signIn() async {
+    try {
+      final AuthCredential credential = PhoneAuthProvider.getCredential(
+          verificationId: this.verificationId, smsCode: this.smsCode);
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((user) {});
+    } catch (e) {
+      print("${e.message}");
+    }
+  }
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -29,32 +107,6 @@ class _LoginState extends State<Login> {
       return true;
     }
     return false;
-  }
-
-  void validateAndSubmit() async {
-    if (validateAndSave()) {
-      try {
-        isloading = true;
-        setState(() {});
-        if (_formType == FormType.login) {
-          print("trying to login with  $_email and $_password");
-          String userId =
-              await widget.auth.signInWithEmailAndPassword(_email, _password);
-          print('Sigined in as $userId');
-        } else if (_formType == FormType.register) {
-          print("trying to register");
-          String userId = await widget.auth
-              .createUserWithEmailAndPassword(_email, _password);
-          print('Registered as $userId');
-        }
-        widget.onSignIn();
-      } catch (e) {
-        isloading = false;
-        showAlertDialog(context, "Something went wrong!", e.message.toString());
-        setState(() {});
-        print('${e.message}');
-      }
-    }
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -71,29 +123,6 @@ class _LoginState extends State<Login> {
     setState(() {
       _formType = FormType.register;
     });
-  }
-
-  void resetPasswordForm() {
-    formKey.currentState.reset();
-    setState(() {
-      _formType = FormType.resetPass;
-    });
-  }
-
-  void resetPassword() async {
-    isloading = true;
-    if (validateAndSave()) {
-      try {
-        await widget.auth.resetPassword(_email).then((val) {
-          print("");
-          isloading = false;
-          showAlertDialog(context, "", "Reset email Sent");
-        });
-      } catch (e) {
-        isloading = false;
-        showAlertDialog(context, "Something went wrong!", e.message.toString());
-      }
-    }
   }
 
   showAlertDialog(BuildContext context, String title, String msg) {
@@ -173,36 +202,19 @@ class _LoginState extends State<Login> {
                 image: AssetImage("assets/cs_logo.png"),
               )),
           Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
             child: TextFormField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Phone Number',
                   icon: Icon(
-                    Icons.person,
+                    Icons.phone_android,
                     color: Colors.white,
                   ),
                   labelStyle: TextStyle(color: Colors.white)),
               validator: (value) =>
-                  value.isEmpty ? "Please input an email" : null,
-              onSaved: (value) => _email = value,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
-            child: TextFormField(
-              style: TextStyle(color: Colors.white),
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  icon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  labelStyle: TextStyle(color: Colors.white)),
-              validator: (value) =>
-                  value.isEmpty ? "Please input a password" : null,
-              onSaved: (value) => _password = value,
+                  value.isEmpty ? "Please input a valid phone number" : null,
+              onSaved: (value) => phoneNo = value,
             ),
           ),
         ];
@@ -226,64 +238,15 @@ class _LoginState extends State<Login> {
             child: TextFormField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  labelText: 'Email Address',
+                  labelText: 'Enter Phone Number',
                   icon: Icon(
-                    Icons.person,
+                    Icons.phone_android,
                     color: Colors.white,
                   ),
                   labelStyle: TextStyle(color: Colors.white)),
               validator: (value) =>
-                  value.isEmpty ? "Please input an email" : null,
-              onSaved: (value) => _email = value,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
-            child: TextFormField(
-              style: TextStyle(color: Colors.white),
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: 'Create Password',
-                  icon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  labelStyle: TextStyle(color: Colors.white)),
-              validator: (value) =>
-                  value.isEmpty ? "Please input a password" : null,
-              onSaved: (value) => _password = value,
-            ),
-          ),
-        ];
-      case FormType.resetPass:
-        return [
-          CircleAvatar(
-              radius: 65,
-              backgroundColor: Colors.white,
-              child: Image(
-                image: AssetImage("assets/cs_logo.png"),
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Reset Password",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
-            child: TextFormField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  labelText: 'Email Address',
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  labelStyle: TextStyle(color: Colors.white)),
-              validator: (value) =>
-                  value.isEmpty ? "Please input an email" : null,
-              onSaved: (value) => _email = value,
+                  value.isEmpty ? "Please input a valid number" : null,
+              onSaved: (value) => phoneNo = value,
             ),
           ),
         ];
@@ -295,11 +258,9 @@ class _LoginState extends State<Login> {
   List<Widget> buildButtons() {
     switch (_formType) {
       case FormType.login:
-        return [loginBtn(registerPage, validateAndSubmit, resetPasswordForm)];
+        return [loginBtn(registerPage, verifyPhone)];
       case FormType.register:
-        return [registerBtn(loginPage, validateAndSubmit)];
-      case FormType.resetPass:
-        return [resetPasswordBtn(loginPage, resetPassword)];
+        return [registerBtn(loginPage, verifyPhone)];
       default:
         return [null];
     }
