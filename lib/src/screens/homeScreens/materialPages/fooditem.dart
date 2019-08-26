@@ -103,16 +103,91 @@ class _FooditemState extends State<Fooditem> {
               floating: false,
               elevation: 10,
               title: Text("${widget.food}"),
-              expandedHeight: 400,
+              expandedHeight: MediaQuery.of(context).size.height / 1.5,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   child: Image(
                     fit: BoxFit.cover,
                     colorBlendMode: BlendMode.softLight,
                     color: Colors.redAccent,
-                    image:,
+                    image: NetworkImage(widget.foodImage),
                   ),
                 ),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "GHS ${widget.price}",
+                            style:
+                                TextStyle(fontSize: 40, fontFamily: "Cookie"),
+                          ),
+                        )),
+                  ),
+                  Container(
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "${widget.food}",
+                            style: TextStyle(
+                                fontSize: 35, fontFamily: "Caveat Bold"),
+                          ),
+                        )),
+                  ),
+                  Container(
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 15),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "${widget.foodDetails}",
+                            style: TextStyle(
+                                fontSize: 20, fontFamily: "kalam Regular"),
+                          ),
+                        )),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                            width: 50,
+                            height: 50,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                value: _selectedQuantity,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedQuantity = newValue;
+                                  });
+                                },
+                                items: foodQuantity.map((quantity) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      "$quantity",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    value: quantity,
+                                  );
+                                }).toList(),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           ],
