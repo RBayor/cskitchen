@@ -95,29 +95,42 @@ class _FooditemState extends State<Fooditem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
-          Center(
-            child: Container(
-              height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.width - 10,
-              decoration: BoxDecoration(
-                  image:
-                      DecorationImage(image: NetworkImage(widget.foodImage))),
-            ),
-          ),
-          Padding(
+      body: Container(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              elevation: 10,
+              title: Text("${widget.food}"),
+              expandedHeight: 400,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  child: Image(
+                    fit: BoxFit.cover,
+                    colorBlendMode: BlendMode.softLight,
+                    color: Colors.redAccent,
+                    image:,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Add to cart",
+        child: Icon(Icons.add_shopping_cart),
+        onPressed: () {
+          _addToCart(widget.food, widget.price, _selectedQuantity,
+              widget.foodImage, widget.foodDetails);
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+/**Padding(
               padding: const EdgeInsets.only(left: 20, top: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -174,18 +187,4 @@ class _FooditemState extends State<Fooditem> {
                     ),
                   )),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: "Add to cart",
-        child: Icon(Icons.add_shopping_cart),
-        onPressed: () {
-          _addToCart(widget.food, widget.price, _selectedQuantity,
-              widget.foodImage, widget.foodDetails);
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-}
+          ), */
