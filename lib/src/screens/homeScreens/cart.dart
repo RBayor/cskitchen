@@ -44,7 +44,10 @@ class _CartState extends State<Cart> {
           children: <Widget>[
             Expanded(
                 child: ListTile(
-              title: Text("Total: Ghs $totalPrice"),
+              title: Text(
+                "Total: \nGhs ${totalPrice.toStringAsFixed(2)}",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
             )),
             Expanded(
               child: MaterialButton(
@@ -149,14 +152,14 @@ class _CartState extends State<Cart> {
     var db = Firestore.instance.collection("orders").document(id);
     Map order;
     await getDbOrder(id);
-    await showOrderOptionDialog(context);
 
     if (prevOrder != null) {
       prevOrder.forEach((item) {
         myOrder.add(item);
       });
     }
-    try {
+    if (food.isNotEmpty) {
+      await showOrderOptionDialog(context);
       for (int i = 0; i < food.length; i++) {
         order = {
           "food": food[i],
@@ -172,10 +175,10 @@ class _CartState extends State<Cart> {
       OrderItems orderItems = OrderItems(order: myOrder);
       db.setData(orderItems.toJson()).then((val) {
         clearItems();
-        setState(() {});
       });
       showAlertDialog(context, "", "Your order has been placed!");
-    } catch (e) {
+      setState(() {});
+    } else {
       showAlertDialog(context, "", "Nothing in cart");
     }
   }
@@ -218,7 +221,7 @@ class _CartState extends State<Cart> {
       }
       setState(() {
         totalPrice = temp;
-        print("total price is $totalPrice");
+        print("total price is ${totalPrice.toStringAsFixed(2)}");
       });
     } catch (e) {}
   }
