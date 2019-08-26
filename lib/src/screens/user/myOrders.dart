@@ -14,7 +14,6 @@ class _PreviousOrdersState extends State<PreviousOrders> {
     var id = await widget.auth.currentUser();
     var db = Firestore.instance;
     DocumentSnapshot orders = await db.collection("orders").document(id).get();
-    print(orders.data['order'].length);
     return orders.data['order'];
   }
 
@@ -38,26 +37,43 @@ class _PreviousOrdersState extends State<PreviousOrders> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: snapshot.data.length,
-              itemBuilder: (_, index) {
-                return Container(
-                    child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Card(
-                    elevation: 10.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    child: ListTile(
-                      title:
-                          Text("${snapshot.data[index]['food'].toUpperCase()}"),
-                      trailing: Text("${snapshot.data[index]['quantity']}"),
+            if (snapshot.hasData) {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: snapshot.data.length,
+                itemBuilder: (_, index) {
+                  return Container(
+                      child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Card(
+                      elevation: 10.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      child: ListTile(
+                        title: Text(
+                            "${snapshot.data[index]['food'].toUpperCase()}"),
+                        trailing: Text("${snapshot.data[index]['quantity']}"),
+                      ),
                     ),
+                  ));
+                },
+              );
+            } else {
+              return Container(
+                  child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Card(
+                  elevation: 10.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25)),
+                  child: ListTile(
+                    title: Text("No purchase yet!"),
+                    trailing: Text("Go buy something"),
                   ),
-                ));
-              },
-            );
+                ),
+              ));
+              ;
+            }
           }
         },
       ),
