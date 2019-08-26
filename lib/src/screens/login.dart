@@ -193,7 +193,7 @@ class _LoginState extends State<Login> {
         child: TextFormField(
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              labelText: 'Phone Number',
+              labelText: 'Phone Number Format (+233500000000)',
               icon: Icon(
                 Icons.phone_android,
                 color: Colors.white,

@@ -1,6 +1,8 @@
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:cskitchen/src/screens/user/myOrders.dart';
+import 'package:cskitchen/src/screens/user/privacy.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Profile extends StatefulWidget {
   Profile({this.auth});
@@ -24,22 +26,23 @@ class _ProfileState extends State<Profile> {
                 child: ListView(
                   children: <Widget>[
                     ListTile(
+                      leading: Icon(
+                        Icons.security,
+                        color: Colors.redAccent,
+                      ),
+                      title: Text("My Orders"),
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   PreviousOrders(widget.auth))),
-                      leading: Icon(
-                        Icons.fastfood,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("My orders"),
                     ),
                     Divider(),
                     ListTile(
-                      onTap: () {},
+                      onTap: () => Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Privacy())),
                       leading: Icon(
-                        Icons.security,
+                        Icons.fastfood,
                         color: Colors.redAccent,
                       ),
                       title: Text("Privacy Policy"),
@@ -52,6 +55,15 @@ class _ProfileState extends State<Profile> {
                         color: Colors.redAccent,
                       ),
                       title: Text("Terms of Use"),
+                    ),
+                    Divider(),
+                    ListTile(
+                      onTap: () {},
+                      leading: Icon(
+                        Icons.code,
+                        color: Colors.redAccent,
+                      ),
+                      title: Text("Developer"),
                     ),
                   ],
                 ),
