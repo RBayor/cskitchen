@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:cskitchen/src/screens/user/myOrders.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   Profile({this.auth});
@@ -15,61 +12,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final formKey = GlobalKey<FormState>();
   int _phoneNumber;
-  addPhoneNumber(BuildContext context, title) {
-    int _phoneNum;
-    Widget submitBtn = RaisedButton(
-      child: Text(
-        "OK",
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-        formKey.currentState.save();
-        setState(() {
-          _phoneNumber = _phoneNum;
-        });
-        print(_phoneNum);
-        Navigator.of(context).pop();
-      },
-    );
-    Widget cancelBtn = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Form(
-        key: formKey,
-        child: TextFormField(
-          decoration: InputDecoration(labelText: "New Phone Number"),
-          onSaved: (value) {
-            _phoneNum = int.parse(value);
-            setPhoneNumber();
-          },
-        ),
-      ),
-      actions: [cancelBtn, submitBtn],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  setPhoneNumber() async {
-    var id = await widget.auth.currentUser();
-    var db = Firestore.instance.collection("orders").document(id);
-
-    /*db.updateData(
-      {"phone": _phoneNumber},
-    );*/
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,15 +114,6 @@ class _ProfileState extends State<Profile> {
                             color: Colors.redAccent,
                           ),
                         ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        addPhoneNumber(context, "Phone Number");
-                      },
-                      child: Icon(
-                        Icons.phone,
-                        color: Colors.redAccent,
                       ),
                     ),
                     Padding(

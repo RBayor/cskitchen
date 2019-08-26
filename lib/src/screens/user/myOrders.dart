@@ -20,7 +20,6 @@ class _PreviousOrdersState extends State<PreviousOrders> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPreviousOrders();
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget loginBtn(registerPage, validateAndSubmit) => Column(
+Widget loginBtn(verifyPhoneNo) => Column(
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.only(right: 20, top: 10),
@@ -9,23 +9,15 @@ Widget loginBtn(registerPage, validateAndSubmit) => Column(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    FlatButton(
+                    RaisedButton(
+                      elevation: 10,
+                      color: Colors.red[700],
                       child: Text(
-                        "Create account",
+                        "Login",
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
-                        registerPage();
-                      },
+                      onPressed: verifyPhoneNo,
                     ),
-                    RaisedButton(
-                        elevation: 10,
-                        color: Colors.red[700],
-                        child: Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: validateAndSubmit),
                   ],
                 ),
               ],

@@ -42,7 +42,6 @@ class _AppRootState extends State<AppRoot> {
     switch (authState) {
       case AuthState.notSignedIn:
         return Login(
-          auth: widget.auth,
           onSignIn: _signedIn,
         );
       case AuthState.signedIn:
