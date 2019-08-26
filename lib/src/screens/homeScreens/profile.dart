@@ -1,6 +1,5 @@
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:cskitchen/src/screens/user/myOrders.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -12,7 +11,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final formKey = GlobalKey<FormState>();
-  int _phoneNumber;
 
   @override
   Widget build(BuildContext context) {
