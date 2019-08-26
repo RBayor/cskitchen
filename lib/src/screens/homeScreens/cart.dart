@@ -23,6 +23,8 @@ class _CartState extends State<Cart> {
   var totalPrice = 0.0;
   List<Map> myOrder = [];
   List prevOrder;
+  String location;
+  String transactionId;
 
   @override
   void initState() {
@@ -85,33 +87,51 @@ class _CartState extends State<Cart> {
     );
   }
 
-  showPaymentOptionDialog(BuildContext context, title, msg) {
-    Widget payOnDelivery = FlatButton(
-      child: Text("Pay on Delivery"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    Widget payNow = FlatButton(
-      child: Text("Pay Now"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Text(msg),
-      actions: [payOnDelivery, payNow],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  showOrderOptionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Text("Confirm Order - Pay to 0559695663"),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    decoration: InputDecoration(labelText: "Enter Location"),
+                    onChanged: (value) {
+                      this.location = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    decoration:
+                        InputDecoration(labelText: "Enter Momo Transaction ID"),
+                    onChanged: (value) {
+                      this.transactionId = value;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            contentPadding: const EdgeInsets.all(10),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Done"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 
   getDbOrder(id) async {
@@ -129,6 +149,7 @@ class _CartState extends State<Cart> {
     var db = Firestore.instance.collection("orders").document(id);
     Map order;
     await getDbOrder(id);
+    await showOrderOptionDialog(context);
 
     if (prevOrder != null) {
       prevOrder.forEach((item) {
@@ -141,9 +162,10 @@ class _CartState extends State<Cart> {
           "food": food[i],
           "quantity": quantity[i],
           "price": price[i],
-          "timeStamp": DateTime.now()
+          "timeStamp": DateTime.now(),
+          "location": this.location,
+          "transactionId": this.transactionId,
         };
-        //print("Adding $order");
         myOrder.add(order);
       }
       print("\n\nMy order is $myOrder");
@@ -198,9 +220,7 @@ class _CartState extends State<Cart> {
         totalPrice = temp;
         print("total price is $totalPrice");
       });
-    } catch (e) {
-      //print(e);
-    }
+    } catch (e) {}
   }
 
   Widget cartProducts() {

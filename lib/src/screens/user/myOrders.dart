@@ -72,7 +72,6 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                   ),
                 ),
               ));
-              ;
             }
           }
         },

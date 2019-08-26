@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:cskitchen/src/screens/customWidgets/loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cskitchen/src/components/auth.dart';
 
 class Login extends StatefulWidget {
   Login({this.onSignIn});
@@ -66,6 +65,8 @@ class _LoginState extends State<Login> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: Text("Enter Verification Code"),
             content: TextField(
               onChanged: (value) {
@@ -96,15 +97,18 @@ class _LoginState extends State<Login> {
         });
   }
 
-  signIn() async {
+  Future signIn() async {
     try {
       final AuthCredential credential = PhoneAuthProvider.getCredential(
           verificationId: this.verificationId, smsCode: this.smsCode);
       await FirebaseAuth.instance.signInWithCredential(credential).then((user) {
         print("signed in with user -> $user");
+      }).then((onValue) {
+        return true;
       });
     } catch (e) {
-      print("${e.message}");
+      showAlertDialog(context, "An Error occured", e.message.toString());
+      print("meesss ${e.message}");
     }
   }
 

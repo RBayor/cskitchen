@@ -67,12 +67,6 @@ class _FooditemState extends State<Fooditem> {
     print("Current $key ${prefs.getStringList(key)}");
   }
 
-  _clearPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    showAlertDialog(context, "", "Cart Cleared");
-  }
-
   showAlertDialog(BuildContext context, title, msg) {
     Widget okButton = FlatButton(
       child: Text("OK"),
@@ -181,10 +175,6 @@ class _FooditemState extends State<Fooditem> {
                   )),
             ),
           ),
-          RaisedButton(
-            child: Text("Clear Cart"),
-            onPressed: _clearPrefs,
-          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
