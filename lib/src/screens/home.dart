@@ -1,4 +1,5 @@
 import 'package:cskitchen/src/components/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/screens/homeScreens/menu.dart';
 import 'package:cskitchen/src/screens/homeScreens/cart.dart';
@@ -24,9 +25,9 @@ class _HomeState extends State<Home> {
 
   void _signOut() async {
     try {
-      await widget.auth.signOut().then((onValue) {
-        widget.onSignedOut();
-      });
+      print("${await FirebaseAuth.instance.currentUser()}");
+      await FirebaseAuth.instance.signOut();
+      widget.onSignedOut();
     } catch (e) {
       print("Error signing out: $e");
     }
@@ -55,7 +56,7 @@ class _HomeState extends State<Home> {
         ),
         actions: <Widget>[
           IconButton(
-            tooltip: "Logout",
+            tooltip: "Sign Out",
             icon: Icon(Icons.exit_to_app),
             onPressed: _signOut,
           )

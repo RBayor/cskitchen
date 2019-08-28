@@ -59,15 +59,6 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {},
                       leading: Icon(
-                        Icons.help_outline,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Help"),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: () {},
-                      leading: Icon(
                         Icons.code,
                         color: Colors.redAccent,
                       ),

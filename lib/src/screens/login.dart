@@ -27,48 +27,6 @@ class _LoginState extends State<Login> {
     return false;
   }
 
-  Future<void> verifyPhone() async {
-    validateAndSave();
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
-      this.verificationId = verId;
-    };
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential credential) async {
-      print("verified $verificationId}");
-    };
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException exception) {
-      print("${exception.message}");
-    };
-
-    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
-      this.verificationId = verId;
-      print("verId $verId ");
-    };
-
-    await FirebaseAuth.instance
-        .verifyPhoneNumber(
-      phoneNumber: this.phoneNo,
-      codeAutoRetrievalTimeout: autoRetrieve,
-      codeSent: smsCodeSent,
-      timeout: const Duration(seconds: 5),
-      verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
-    )
-        .then((onValue) async {
-      print("waiting");
-      isloading = true;
-      setState(() {});
-      Future.delayed(Duration(seconds: 5)).then((onValue) {
-        print("done waiting");
-        smsCodeDialog(context);
-        setState(() {
-          isloading = false;
-        });
-      });
-    });
-  }
-
   Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -117,6 +75,54 @@ class _LoginState extends State<Login> {
             ],
           );
         });
+  }
+
+  Future verifyPhone() async {
+    validateAndSave();
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+      this.verificationId = verId;
+      print("time out");
+    };
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential credential) async {
+      print("is verified? $credential");
+      setState(() {
+        isloading = true;
+      });
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((onValue) {
+        widget.onSignIn();
+      });
+    };
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException exception) {
+      print("${exception.message}");
+    };
+
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
+      this.verificationId = verId;
+      print("verId $verId ");
+      print("waiting");
+      isloading = true;
+      setState(() {});
+      Future.delayed(Duration(seconds: 6)).then((onValue) {
+        print("done waiting");
+        smsCodeDialog(context);
+        setState(() {
+          isloading = false;
+        });
+      });
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: this.phoneNo,
+      codeAutoRetrievalTimeout: autoRetrieve,
+      codeSent: smsCodeSent,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+    );
   }
 
   Future signIn() async {
@@ -177,7 +183,7 @@ class _LoginState extends State<Login> {
             Padding(
               padding: EdgeInsets.all(15),
               child: Text(
-                "Sending Verification Code",
+                "Verifying Number",
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

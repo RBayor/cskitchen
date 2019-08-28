@@ -167,7 +167,8 @@ class _CartState extends State<Cart> {
     }
     if (food != null) {
       await showOrderOptionDialog(context);
-      if (location.isNotEmpty && transactionId.isNotEmpty) {
+
+      if (location != null && transactionId != null) {
         for (int i = 0; i < food.length; i++) {
           order = {
             "food": food[i],
@@ -186,7 +187,8 @@ class _CartState extends State<Cart> {
         });
         showAlertDialog(context, "", "Your order has been placed!");
       } else {
-        showAlertDialog(context, "", "Please Enter location");
+        showAlertDialog(context, "",
+            "Please Enter location and transaction Id to confirm order");
       }
       setState(() {});
     } else {
