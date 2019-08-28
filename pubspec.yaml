@@ -28,6 +28,8 @@ flutter_icons:
   image_path: "assets/cs_icon.png"
   android: true
   ios: true
+  adaptive_icon_background: "#FFFFFFFF"
+  adaptive_icon_foreground: "assets/cs_icon.png"
 
 
 flutter:
@@ -37,7 +39,10 @@ flutter:
     - assets/cs_logo.png
     - assets/chips.jpg
     - assets/avatar.png
+    - assets/cs_icon.jpg
     - assets/cs_icon.png
+    - assets/cs.jpg
+    
 
   fonts: 
     - family: Indie

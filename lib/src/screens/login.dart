@@ -55,8 +55,17 @@ class _LoginState extends State<Login> {
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
     )
-        .then((onValue) {
-      smsCodeDialog(context);
+        .then((onValue) async {
+      print("waiting");
+      isloading = true;
+      setState(() {});
+      Future.delayed(Duration(seconds: 5)).then((onValue) {
+        print("done waiting");
+        smsCodeDialog(context);
+        setState(() {
+          isloading = false;
+        });
+      });
     });
   }
 
@@ -70,7 +79,7 @@ class _LoginState extends State<Login> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: Text("Enter Verification Code"),
             content: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: TextField(
                 onChanged: (value) {
                   this.smsCode = value;
@@ -80,7 +89,16 @@ class _LoginState extends State<Login> {
             contentPadding: EdgeInsets.all(10.0),
             actions: <Widget>[
               FlatButton(
-                child: Text("Done"),
+                child: Text("Resend"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  verifyPhone();
+                },
+              ),
+              RaisedButton(
+                elevation: 0,
+                color: Colors.white,
+                child: Text("Verify"),
                 onPressed: () async {
                   await signIn();
                   FirebaseAuth.instance.currentUser().then((user) {
@@ -95,7 +113,7 @@ class _LoginState extends State<Login> {
                     }
                   });
                 },
-              )
+              ),
             ],
           );
         });
@@ -153,8 +171,23 @@ class _LoginState extends State<Login> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/chips.jpg"), fit: BoxFit.cover)),
-        child: Center(
-          child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Text(
+                "Sending Verification Code",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ],
         ),
       ));
     } else {
@@ -205,8 +238,6 @@ class _LoginState extends State<Login> {
       Padding(
         padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
         child: TextFormField(
-          autofocus: true,
-          autocorrect: true,
           style: TextStyle(
             color: Colors.redAccent,
             fontSize: 18,
