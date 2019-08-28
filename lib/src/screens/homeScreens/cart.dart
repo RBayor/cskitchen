@@ -112,8 +112,7 @@ class _CartState extends State<Cart> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: TextField(
-                      decoration: InputDecoration(
-                          labelText: "Enter Location and payment "),
+                      decoration: InputDecoration(labelText: "Location"),
                       onChanged: (value) {
                         this.location = value;
                       },
@@ -122,8 +121,8 @@ class _CartState extends State<Cart> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextField(
-                      decoration: InputDecoration(
-                          labelText: "Enter Momo Transaction ID"),
+                      decoration:
+                          InputDecoration(labelText: "Momo Transaction ID"),
                       onChanged: (value) {
                         this.transactionId = value;
                       },
