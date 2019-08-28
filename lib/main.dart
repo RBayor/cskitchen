@@ -13,11 +13,15 @@ class Cskitchen extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      theme: ThemeData(
-          appBarTheme:
-              AppBarTheme(color: Colors.redAccent[700], elevation: 10.0),
-          accentColor: Colors.redAccent),
+      debugShowCheckedModeBanner: false,
       title: 'Cs Kitchen',
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          color: Colors.redAccent[700],
+          elevation: 10.0,
+        ),
+        accentColor: Colors.redAccent,
+      ),
       home: AppRoot(
         auth: Auth(),
       ),

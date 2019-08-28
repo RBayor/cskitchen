@@ -2,7 +2,6 @@ import 'package:cskitchen/src/components/auth.dart';
 import 'package:cskitchen/src/screens/user/myOrders.dart';
 import 'package:cskitchen/src/screens/user/privacy.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class Profile extends StatefulWidget {
   Profile({this.auth});
@@ -27,7 +26,7 @@ class _ProfileState extends State<Profile> {
                   children: <Widget>[
                     ListTile(
                       leading: Icon(
-                        Icons.security,
+                        Icons.fastfood,
                         color: Colors.redAccent,
                       ),
                       title: Text("My Orders"),
@@ -42,7 +41,7 @@ class _ProfileState extends State<Profile> {
                       onTap: () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Privacy())),
                       leading: Icon(
-                        Icons.fastfood,
+                        Icons.security,
                         color: Colors.redAccent,
                       ),
                       title: Text("Privacy Policy"),

@@ -48,7 +48,7 @@ class _MenuState extends State<Menu> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0)),
                     child: Container(
-                      height: MediaQuery.of(context).size.height / 3,
+                      height: MediaQuery.of(context).size.height / 3.3,
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
@@ -62,20 +62,24 @@ class _MenuState extends State<Menu> {
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
                               "${snapshot.data[index].data["food"]}",
-                              style:
-                                  TextStyle(fontSize: 25, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
                               padding:
                                   const EdgeInsets.only(left: 10, bottom: 10),
                               child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                                 onPressed: () {},
-                                color: Colors.greenAccent[700],
+                                color: Colors.transparent,
                                 child: Text(
-                                  "${snapshot.data[index].data["price"]}",
+                                  "Ghs ${snapshot.data[index].data["price"]}",
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
+                                      fontSize: 20, color: Colors.red),
                                 ),
                               )),
                         ],

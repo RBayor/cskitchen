@@ -90,7 +90,7 @@ class _CartState extends State<Cart> {
     );
   }
 
-  showOrderOptionDialog(BuildContext context) {
+  Future<Widget> showOrderOptionDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -99,30 +99,38 @@ class _CartState extends State<Cart> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: Text("Confirm Order - Pay to 0559695663"),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    decoration: InputDecoration(labelText: "Enter Location"),
-                    onChanged: (value) {
-                      this.location = value;
-                    },
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                        "Pickup? Enter 'Pickup' for location and transactionID"),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    decoration:
-                        InputDecoration(labelText: "Enter Momo Transaction ID"),
-                    onChanged: (value) {
-                      this.transactionId = value;
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "Enter Location and payment "),
+                      onChanged: (value) {
+                        this.location = value;
+                      },
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "Enter Momo Transaction ID"),
+                      onChanged: (value) {
+                        this.transactionId = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
             contentPadding: const EdgeInsets.all(10),
             actions: <Widget>[
@@ -158,25 +166,29 @@ class _CartState extends State<Cart> {
         myOrder.add(item);
       });
     }
-    if (food.isNotEmpty) {
+    if (food != null) {
       await showOrderOptionDialog(context);
-      for (int i = 0; i < food.length; i++) {
-        order = {
-          "food": food[i],
-          "quantity": quantity[i],
-          "price": price[i],
-          "timeStamp": DateTime.now(),
-          "location": this.location,
-          "transactionId": this.transactionId,
-        };
-        myOrder.add(order);
+      if (location.isNotEmpty && transactionId.isNotEmpty) {
+        for (int i = 0; i < food.length; i++) {
+          order = {
+            "food": food[i],
+            "quantity": quantity[i],
+            "price": price[i],
+            "timeStamp": DateTime.now(),
+            "location": this.location,
+            "transactionId": this.transactionId,
+          };
+          myOrder.add(order);
+        }
+        print("\n\nMy order is $myOrder");
+        OrderItems orderItems = OrderItems(order: myOrder);
+        db.setData(orderItems.toJson()).then((val) {
+          clearItems();
+        });
+        showAlertDialog(context, "", "Your order has been placed!");
+      } else {
+        showAlertDialog(context, "", "Please Enter location");
       }
-      print("\n\nMy order is $myOrder");
-      OrderItems orderItems = OrderItems(order: myOrder);
-      db.setData(orderItems.toJson()).then((val) {
-        clearItems();
-      });
-      showAlertDialog(context, "", "Your order has been placed!");
       setState(() {});
     } else {
       showAlertDialog(context, "", "Nothing in cart");

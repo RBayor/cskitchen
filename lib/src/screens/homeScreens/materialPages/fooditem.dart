@@ -126,7 +126,7 @@ class _FooditemState extends State<Fooditem> {
                           child: Text(
                             "GHS ${widget.price}",
                             style:
-                                TextStyle(fontSize: 40, fontFamily: "Cookie"),
+                                TextStyle(fontSize: 25, fontFamily: "Cookie"),
                           ),
                         )),
                   ),

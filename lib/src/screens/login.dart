@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   String phoneNo;
   String smsCode;
   String verificationId;
+  String countryCode = "+233";
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -68,10 +69,13 @@ class _LoginState extends State<Login> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: Text("Enter Verification Code"),
-            content: TextField(
-              onChanged: (value) {
-                this.smsCode = value;
-              },
+            content: Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                onChanged: (value) {
+                  this.smsCode = value;
+                },
+              ),
             ),
             contentPadding: EdgeInsets.all(10.0),
             actions: <Widget>[
@@ -189,19 +193,37 @@ class _LoginState extends State<Login> {
             image: AssetImage("assets/cs_logo.png"),
           )),
       Padding(
+        padding: const EdgeInsets.all(10),
+        child: Text(
+          "Login",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+      ),
+      Padding(
         padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
         child: TextFormField(
-          style: TextStyle(color: Colors.white),
+          autofocus: true,
+          autocorrect: true,
+          style: TextStyle(
+            color: Colors.redAccent,
+            fontSize: 18,
+          ),
           decoration: InputDecoration(
-              labelText: 'Phone Number Format (+233500000000)',
+              labelText: 'Phone Number',
               icon: Icon(
                 Icons.phone_android,
                 color: Colors.white,
               ),
-              labelStyle: TextStyle(color: Colors.white)),
+              labelStyle: TextStyle(color: Colors.white, fontSize: 18)),
           validator: (value) =>
               value.isEmpty ? "Please input a valid phone number" : null,
-          onSaved: (value) => phoneNo = value,
+          onSaved: (value) {
+            phoneNo = countryCode + value;
+            print("Phone $phoneNo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          },
         ),
       ),
     ];
