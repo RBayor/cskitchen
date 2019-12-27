@@ -34,6 +34,19 @@ class _CartState extends State<Cart> {
     });
   }
 
+  // Future apiReq() {
+  //   //const Base64Codec base64 = Base64Codec();
+  //   final String user = "mjcwgtti";
+  //   final String pass = "wnkwywlq";
+  //   final String credentials = "$user:$pass";
+  //   final base64conversion = utf8.fuse(base64);
+  //   final encodeCredentials = base64conversion.encode(credentials);
+
+  //   Map<String, String> headers = {
+  //     HttpHeaders.authorizationHeader: "Basic $encodeCredentials"
+  //   };
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
