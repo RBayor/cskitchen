@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cskitchen/src/screens/homeScreens/pay.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,9 @@ class _CartState extends State<Cart> {
   List prevOrder;
   String location;
   String transactionId;
+  List<String> paymentNetwork = ["MTN", "VODA"];
+  String _selectedNetwork = "MTN";
+  String email;
 
   @override
   void initState() {
@@ -33,19 +37,6 @@ class _CartState extends State<Cart> {
       computeOrder();
     });
   }
-
-  // Future apiReq() {
-  //   //const Base64Codec base64 = Base64Codec();
-  //   final String user = "mjcwgtti";
-  //   final String pass = "wnkwywlq";
-  //   final String credentials = "$user:$pass";
-  //   final base64conversion = utf8.fuse(base64);
-  //   final encodeCredentials = base64conversion.encode(credentials);
-
-  //   Map<String, String> headers = {
-  //     HttpHeaders.authorizationHeader: "Basic $encodeCredentials"
-  //   };
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +53,38 @@ class _CartState extends State<Cart> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             )),
+            /* Expanded(
+              child: MaterialButton(
+                onPressed: pay,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: _selectedNetwork,
+                    onChanged: (val) {
+                      setState(() {
+                        _selectedNetwork = val;
+                      });
+                    },
+                    items: paymentNetwork.map((net) {
+                      return DropdownMenuItem(
+                        child: Text(
+                          "$net",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
+                        ),
+                        value: net,
+                      );
+                    }).toList(),
+                  ),
+                ),
+                color: Colors.white,
+              ),
+            ),*/
             Expanded(
               child: MaterialButton(
-                onPressed: placeCartOrder,
+                onPressed: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Pay())),
                 child: Text(
                   "Place order",
                   style: TextStyle(color: Colors.white),
@@ -111,7 +131,9 @@ class _CartState extends State<Cart> {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text("Confirm Order - Pay to 0559695663"),
+            title: Center(
+              child: Text("Payment"),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -119,8 +141,12 @@ class _CartState extends State<Cart> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Text(
-                        "Pickup? Enter 'Pickup' for location and transactionID"),
+                    child: TextField(
+                      decoration: InputDecoration(labelText: "email"),
+                      onChanged: (value) {
+                        this.email = value;
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -166,6 +192,8 @@ class _CartState extends State<Cart> {
       }
     });
   }
+
+  pay() {}
 
   placeCartOrder() async {
     var id = await widget.auth.currentUser();
