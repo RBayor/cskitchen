@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Pay extends StatelessWidget {
-  final String url = "https://ravesandbox.flutterwave.com/pay/1qwcqsfozgj0";
+  final String url = "https://ravesandbox.flutterwave.com/pay/cskitchen";
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   @override
