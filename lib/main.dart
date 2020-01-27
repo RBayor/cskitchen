@@ -16,6 +16,7 @@ class Cskitchen extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cs Kitchen',
       theme: ThemeData(
+        primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
           color: Colors.redAccent[700],
           elevation: 10.0,

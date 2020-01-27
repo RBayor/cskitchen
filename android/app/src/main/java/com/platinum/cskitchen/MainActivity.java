@@ -1,4 +1,4 @@
-package com.example.cskitchen;
+package com.platinum.cskitchen;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
