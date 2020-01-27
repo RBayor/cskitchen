@@ -81,11 +81,9 @@ class _LoginState extends State<Login> {
     validateAndSave();
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationId = verId;
-      print("time out");
     };
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential credential) async {
-      print("is verified? $credential");
       setState(() {
         isloading = true;
       });
@@ -119,7 +117,7 @@ class _LoginState extends State<Login> {
       phoneNumber: this.phoneNo,
       codeAutoRetrievalTimeout: autoRetrieve,
       codeSent: smsCodeSent,
-      timeout: const Duration(seconds: 5),
+      timeout: const Duration(seconds: 6),
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
     );
@@ -259,7 +257,6 @@ class _LoginState extends State<Login> {
               value.isEmpty ? "Please input a valid phone number" : null,
           onSaved: (value) {
             phoneNo = countryCode + value;
-            print("Phone $phoneNo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           },
         ),
       ),

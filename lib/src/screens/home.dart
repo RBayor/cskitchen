@@ -25,12 +25,9 @@ class _HomeState extends State<Home> {
 
   void _signOut() async {
     try {
-      print("${await FirebaseAuth.instance.currentUser()}");
       await FirebaseAuth.instance.signOut();
       widget.onSignedOut();
-    } catch (e) {
-      print("Error signing out: $e");
-    }
+    } catch (e) {}
   }
 
   @override

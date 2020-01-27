@@ -34,19 +34,6 @@ class _CartState extends State<Cart> {
     });
   }
 
-  // Future apiReq() {
-  //   //const Base64Codec base64 = Base64Codec();
-  //   final String user = "mjcwgtti";
-  //   final String pass = "wnkwywlq";
-  //   final String credentials = "$user:$pass";
-  //   final base64conversion = utf8.fuse(base64);
-  //   final encodeCredentials = base64conversion.encode(credentials);
-
-  //   Map<String, String> headers = {
-  //     HttpHeaders.authorizationHeader: "Basic $encodeCredentials"
-  //   };
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,8 +221,6 @@ class _CartState extends State<Cart> {
   fetchCartPrefs(key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var items = prefs.getStringList(key);
-
-    print("Fetch for $key  $items");
     return items;
   }
 
@@ -247,7 +232,6 @@ class _CartState extends State<Cart> {
       }
       setState(() {
         totalPrice = temp;
-        print("total price is ${totalPrice.toStringAsFixed(2)}");
       });
     } catch (e) {}
   }
