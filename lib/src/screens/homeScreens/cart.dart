@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cskitchen/src/screens/homeScreens/pay.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,9 @@ class _CartState extends State<Cart> {
   List prevOrder;
   String location;
   String transactionId;
+  List<String> paymentNetwork = ["MTN", "VODA"];
+  String _selectedNetwork = "MTN";
+  String email;
 
   @override
   void initState() {
@@ -51,7 +55,8 @@ class _CartState extends State<Cart> {
             )),
             Expanded(
               child: MaterialButton(
-                onPressed: placeCartOrder,
+                onPressed: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Pay())),
                 child: Text(
                   "Place order",
                   style: TextStyle(color: Colors.white),
@@ -98,7 +103,9 @@ class _CartState extends State<Cart> {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text("Confirm Order - Pay to 0559695663"),
+            title: Center(
+              child: Text("Payment"),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -106,8 +113,12 @@ class _CartState extends State<Cart> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Text(
-                        "Pickup? Enter 'Pickup' for location and transactionID"),
+                    child: TextField(
+                      decoration: InputDecoration(labelText: "email"),
+                      onChanged: (value) {
+                        this.email = value;
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -153,6 +164,8 @@ class _CartState extends State<Cart> {
       }
     });
   }
+
+  pay() {}
 
   placeCartOrder() async {
     var id = await widget.auth.currentUser();
