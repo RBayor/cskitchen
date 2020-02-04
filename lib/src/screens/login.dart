@@ -27,6 +27,33 @@ class _LoginState extends State<Login> {
     return false;
   }
 
+  notify(msg) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('User'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(msg.toString()),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -91,21 +118,19 @@ class _LoginState extends State<Login> {
           .signInWithCredential(credential)
           .then((onValue) {
         widget.onSignIn();
+      }).catchError((onError) {
+        notify("sign in error \n $onError");
       });
     };
     final PhoneVerificationFailed verificationFailed =
         (AuthException exception) {
-      print("${exception.message}");
+      notify("Veri Failed! \t ${exception.message}");
     };
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      print("verId $verId ");
-      print("waiting");
-      isloading = true;
-      setState(() {});
-      Future.delayed(Duration(seconds: 6)).then((onValue) {
-        print("done waiting");
+      //isloading = true;
+      Future.delayed(Duration(seconds: 5)).then((onValue) {
         smsCodeDialog(context);
         setState(() {
           isloading = false;

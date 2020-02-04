@@ -27,7 +27,7 @@ class _CartState extends State<Cart> {
   String location;
   String transactionId;
   List<String> paymentNetwork = ["MTN", "VODA"];
-  String _selectedNetwork = "MTN";
+  //String _selectedNetwork = "MTN";
   String email;
 
   @override
