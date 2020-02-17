@@ -43,11 +43,53 @@ class _MenuState extends State<Menu> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Card(
-                    elevation: 10.0,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0)),
-                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0)),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 3.3,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image:
+                                NetworkImage(snapshot.data[index].data["img"]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, bottom: 10),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                onPressed: () {},
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Ghs ${snapshot.data[index].data["price"]}",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.red),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}
+/**
+ *  Container(
                       height: MediaQuery.of(context).size.height / 3.3,
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -97,13 +139,48 @@ class _MenuState extends State<Menu> {
                         ],
                       ),
                     ),
-                  ),
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  }
-}
+ */
+/**
+ * Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "${snapshot.data[index].data["food"]}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Material(
+                                  child: Text(
+                                    "Ghs ${snapshot.data[index].data["price"]}",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.red),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Expanded(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: MediaQuery.of(context).size.height / 5,
+                                child: Image.network(
+                                  snapshot.data[index].data["img"],
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              )
+                            ],
+                          ))
+                        ],
+                      ),
+ */

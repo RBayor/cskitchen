@@ -106,10 +106,9 @@ class _FooditemState extends State<Fooditem> {
               expandedHeight: MediaQuery.of(context).size.height / 1.5,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
+                  color: Colors.white,
                   child: Image(
                     fit: BoxFit.cover,
-                    colorBlendMode: BlendMode.softLight,
-                    color: Colors.redAccent,
                     image: NetworkImage(widget.foodImage),
                   ),
                 ),
