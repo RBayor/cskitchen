@@ -50,38 +50,50 @@ class _MenuState extends State<Menu> {
                     child: Container(
                       height: MediaQuery.of(context).size.height / 3.3,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  snapshot.data[index].data["img"]),
-                              fit: BoxFit.cover)),
+                        image: DecorationImage(
+                          image: NetworkImage(snapshot.data[index].data["img"]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "${snapshot.data[index].data["food"]}",
-                              style: TextStyle(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 10),
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              onPressed: () {},
+                              color: Colors.transparent,
+                              child: Text(
+                                "${snapshot.data[index].data["food"]}",
+                                style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, bottom: 10),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                onPressed: () {},
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Ghs ${snapshot.data[index].data["price"]}",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.red),
-                                ),
-                              )),
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 10),
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              onPressed: () {},
+                              color: Colors.transparent,
+                              child: Text(
+                                "Ghs ${snapshot.data[index].data["price"]}",
+                                style:
+                                    TextStyle(fontSize: 20, color: Colors.red),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

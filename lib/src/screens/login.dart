@@ -87,10 +87,8 @@ class _LoginState extends State<Login> {
                 onPressed: () async {
                   await signIn();
                   FirebaseAuth.instance.currentUser().then((user) {
-                    print("Current user is $user !!!!!!!!!!!!!!!!!!!!!!!!!!");
                     if (user != null) {
                       Navigator.of(context).pop();
-                      print("Signed in as $user");
                       widget.onSignIn();
                       setState(() {});
                     } else {
