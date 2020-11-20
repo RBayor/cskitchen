@@ -9,9 +9,9 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   Future getMenu() async {
-    var db = Firestore.instance;
-    QuerySnapshot menu = await db.collection("menu").getDocuments();
-    return menu.documents;
+    var db = FirebaseFirestore.instance;
+    QuerySnapshot menu = await db.collection("menu").get();
+    return menu.docs;
   }
 
   @override
@@ -28,57 +28,27 @@ class _MenuState extends State<Menu> {
             scrollDirection: Axis.vertical,
             itemCount: snapshot.data.length,
             itemBuilder: (_, index) {
-              String imgUrl = snapshot.data[index].data["img"];
+              String imgUrl = snapshot.data[index]["img"];
               return InkWell(
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Fooditem(
-                            snapshot.data[index].data["food"],
-                            snapshot.data[index].data["price"],
+                            snapshot.data[index]["food"],
+                            snapshot.data[index]["price"],
                             imgUrl,
-                            snapshot.data[index].data["foodDetails"],
+                            snapshot.data[index]["foodDetails"],
                           )),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0)),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 3.3,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image:
-                                NetworkImage(snapshot.data[index].data["img"]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, bottom: 10),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                onPressed: () {},
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Ghs ${snapshot.data[index].data["price"]}",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.red),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
+                  child: ListTile(
+                    leading: SizedBox(
+                      height: 100.0,
+                      width: 100.0, // fixed width and height
+                      child: Image.network(imgUrl),
+                    ),
+                  ),
                 ),
               );
             },
@@ -88,99 +58,40 @@ class _MenuState extends State<Menu> {
     );
   }
 }
-/**
- *  Container(
-                      height: MediaQuery.of(context).size.height / 3.3,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(snapshot.data[index].data["img"]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10, bottom: 10),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              onPressed: () {},
-                              color: Colors.transparent,
-                              child: Text(
-                                "${snapshot.data[index].data["food"]}",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10, bottom: 10),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              onPressed: () {},
-                              color: Colors.transparent,
-                              child: Text(
-                                "Ghs ${snapshot.data[index].data["price"]}",
-                                style:
-                                    TextStyle(fontSize: 20, color: Colors.red),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
- */
-/**
- * Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "${snapshot.data[index].data["food"]}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Material(
-                                  child: Text(
-                                    "Ghs ${snapshot.data[index].data["price"]}",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.red),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Expanded(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: MediaQuery.of(context).size.height / 5,
-                                child: Image.network(
-                                  snapshot.data[index].data["img"],
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              )
-                            ],
-                          ))
-                        ],
-                      ),
- */
+
+// Card(
+//                       clipBehavior: Clip.antiAlias,
+//                       elevation: 5.0,
+//                       shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(25.0)),
+//                       child: Container(
+//                         height: MediaQuery.of(context).size.height / 3.3,
+//                         decoration: BoxDecoration(
+//                           image: DecorationImage(
+//                             image: NetworkImage(snapshot.data[index]["img"]),
+//                             fit: BoxFit.cover,
+//                           ),
+//                         ),
+//                         child: Column(
+//                           mainAxisAlignment: MainAxisAlignment.end,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: <Widget>[
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsets.only(left: 10, bottom: 10),
+//                               child: RaisedButton(
+//                                 shape: RoundedRectangleBorder(
+//                                   borderRadius: BorderRadius.circular(20),
+//                                 ),
+//                                 onPressed: () {},
+//                                 color: Colors.transparent,
+//                                 child: Text(
+//                                   "Ghs ${snapshot.data[index]["price"]}",
+//                                   style: TextStyle(
+//                                       fontSize: 20, color: Colors.red),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       )),

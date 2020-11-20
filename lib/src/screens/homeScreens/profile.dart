@@ -15,60 +15,66 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-              height: 250,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: ListView(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(
-                        Icons.fastfood,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("My Orders"),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PreviousOrders(widget.auth))),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Privacy())),
-                      leading: Icon(
-                        Icons.security,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Privacy Policy"),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: () {},
-                      leading: Icon(
-                        Icons.warning,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Terms of Use"),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: () {},
-                      leading: Icon(
-                        Icons.code,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Developer"),
-                    ),
-                  ],
-                ),
-              )),
-        )
-      ],
-    );
+    // TODO: implement build
+    throw Scaffold();
   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: <Widget>[
+//         Expanded(
+//           child: Container(
+//               height: 250,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(left: 10),
+//                 child: ListView(
+//                   children: <Widget>[
+//                     ListTile(
+//                       leading: Icon(
+//                         Icons.fastfood,
+//                         color: Colors.redAccent,
+//                       ),
+//                       title: Text("My Orders"),
+//                       onTap: () => Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) =>
+//                                   PreviousOrders(widget.auth))),
+//                     ),
+//                     Divider(),
+//                     ListTile(
+//                       onTap: () => Navigator.push(context,
+//                           MaterialPageRoute(builder: (context) => Privacy())),
+//                       leading: Icon(
+//                         Icons.security,
+//                         color: Colors.redAccent,
+//                       ),
+//                       title: Text("Privacy Policy"),
+//                     ),
+//                     Divider(),
+//                     ListTile(
+//                       onTap: () {},
+//                       leading: Icon(
+//                         Icons.warning,
+//                         color: Colors.redAccent,
+//                       ),
+//                       title: Text("Terms of Use"),
+//                     ),
+//                     Divider(),
+//                     ListTile(
+//                       onTap: () {},
+//                       leading: Icon(
+//                         Icons.code,
+//                         color: Colors.redAccent,
+//                       ),
+//                       title: Text("Developer"),
+//                     ),
+//                   ],
+//                 ),
+//               )),
+//         )
+//       ],
+//     );
+//   }
 }

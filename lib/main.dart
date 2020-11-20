@@ -2,8 +2,14 @@ import 'package:cskitchen/src/components/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/screens/appRoot.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cskitchen/router.dart' as router;
 
-void main() => runApp(Cskitchen());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(Cskitchen());
+}
 
 class Cskitchen extends StatelessWidget {
   @override
@@ -26,6 +32,7 @@ class Cskitchen extends StatelessWidget {
       home: AppRoot(
         auth: Auth(),
       ),
+      onGenerateRoute: router.generateRoute,
     );
   }
 }

@@ -12,7 +12,7 @@ class Auth implements BaseAuth {
   Future<void> verifyPhoneNumber(String phoneNo) async {}
 
   Future<String> currentUser() async {
-    FirebaseUser user = await firebaseAuth.currentUser();
+    User user = firebaseAuth.currentUser;
     var id;
     user == null ? id = user : id = user.uid;
     return id;

@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493843910301:android:616b65c195373245254e74",
+        "mobilesdk_app_id": "1:493843910301:android:0d8d24fc14a7174a254e74",
         "android_client_info": {
           "package_name": "com.platinum.cskitchen"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "493843910301-8k0ckv8gesik1ke05ja7pmc3l2m1o7bp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.platinum.cskitchen",
-            "certificate_hash": "b5d2144675ce60f0c7d5ba72109a73ffd199217a"
-          }
-        },
         {
           "client_id": "493843910301-gnhkatfkm5tst8ofc8adbrfmamogvna0.apps.googleusercontent.com",
           "client_type": 3

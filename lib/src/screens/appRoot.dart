@@ -18,6 +18,7 @@ class _AppRootState extends State<AppRoot> {
   @override
   void initState() {
     super.initState();
+
     widget.auth.currentUser().then((userId) {
       setState(() {
         authState = userId == null ? AuthState.notSignedIn : AuthState.signedIn;
@@ -25,11 +26,11 @@ class _AppRootState extends State<AppRoot> {
     });
   }
 
-  void _signedIn() {
-    setState(() {
-      authState = AuthState.signedIn;
-    });
-  }
+  // void _signedIn() {
+  //   setState(() {
+  //     authState = AuthState.signedIn;
+  //   });
+  // }
 
   void _signedOut() {
     setState(() {
@@ -41,9 +42,7 @@ class _AppRootState extends State<AppRoot> {
   Widget build(BuildContext context) {
     switch (authState) {
       case AuthState.notSignedIn:
-        return Login(
-          onSignIn: _signedIn,
-        );
+        return Login();
       case AuthState.signedIn:
         return Home(
           auth: widget.auth,

@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(232, 65, 67, 1),
+      // backgroundColor: Color.fromRGBO(232, 65, 67, 1),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -74,32 +74,26 @@ class _HomeState extends State<Home> {
         },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.fastfood,
-                color: Colors.white,
-              ),
-              title: Text(
-                "Menu",
-                style: TextStyle(color: Colors.white),
-              )),
+            icon: Icon(
+              Icons.fastfood,
+              color: Colors.white,
+            ),
+            label: "Menu",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-              title: Text(
-                "cart",
-                style: TextStyle(color: Colors.white),
-              )),
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+            label: "cart",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_outline,
-                color: Colors.white,
-              ),
-              title: Text(
-                "Profile",
-                style: TextStyle(color: Colors.white),
-              )),
+            icon: Icon(
+              Icons.person_outline,
+              color: Colors.white,
+            ),
+            label: "Profile",
+          ),
         ],
       ),
     );
