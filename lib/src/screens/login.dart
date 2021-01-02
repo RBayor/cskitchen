@@ -16,22 +16,17 @@ class _LoginState extends State<Login> {
 
   Future loginUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
-    print("trying to log");
 
     _auth.verifyPhoneNumber(
         phoneNumber: mobile,
         timeout: Duration(seconds: 60),
         verificationCompleted: (AuthCredential credential) async {
-          print("got it");
           await _auth
               .signInWithCredential(credential)
               .then((value) => Navigator.pushReplacementNamed(context, "home"))
               .catchError((e) {
             print(e);
           });
-          // User user = result.user;
-
-          // print(user);
         },
         verificationFailed: (FirebaseAuthException authException) {
           print(authException);
@@ -57,8 +52,9 @@ class _LoginState extends State<Login> {
                     FirebaseAuth auth = FirebaseAuth.instance;
                     var smsCode = _codeController.text.trim();
                     var _credential = PhoneAuthProvider.credential(
-                        verificationId: verificationId, smsCode: smsCode);
-
+                      verificationId: verificationId,
+                      smsCode: smsCode,
+                    );
                     auth
                         .signInWithCredential(_credential)
                         .then((value) =>
@@ -78,10 +74,10 @@ class _LoginState extends State<Login> {
         });
   }
 
-  Future checkUser() {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    _auth.authStateChanges();
-  }
+  // Future checkUser() {
+  //   FirebaseAuth _auth = FirebaseAuth.instance;
+  //   _auth.authStateChanges();
+  // }
 
   String onNumber(String val) {
     return phoneNo = countryCode + val;

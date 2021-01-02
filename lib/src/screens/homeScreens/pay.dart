@@ -7,6 +7,7 @@ class Pay extends StatelessWidget {
   final String url = "https://ravesandbox.flutterwave.com/pay/cskitchen";
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
+  // CookieManager.getInstance().setAcceptCookie(true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

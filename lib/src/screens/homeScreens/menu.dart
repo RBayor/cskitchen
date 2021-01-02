@@ -25,6 +25,7 @@ class _MenuState extends State<Menu> {
           );
         } else {
           return ListView.builder(
+            shrinkWrap: false,
             scrollDirection: Axis.vertical,
             itemCount: snapshot.data.length,
             itemBuilder: (_, index) {
@@ -41,13 +42,13 @@ class _MenuState extends State<Menu> {
                           )),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(top: 5),
                   child: ListTile(
-                    leading: SizedBox(
-                      height: 100.0,
-                      width: 100.0, // fixed width and height
-                      child: Image.network(imgUrl),
+                    leading: Container(child: Image.network(imgUrl)),
+                    title: Text(
+                      snapshot.data[index]["food"],
                     ),
+                    subtitle: Text('Ghs ${snapshot.data[index]["price"]}'),
                   ),
                 ),
               );
