@@ -74,11 +74,6 @@ class _LoginState extends State<Login> {
         });
   }
 
-  // Future checkUser() {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   _auth.authStateChanges();
-  // }
-
   String onNumber(String val) {
     return phoneNo = countryCode + val;
   }

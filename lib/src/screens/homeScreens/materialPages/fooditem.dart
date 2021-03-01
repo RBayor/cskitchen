@@ -195,7 +195,7 @@ class _FooditemState extends State<Fooditem> {
           ),
           RaisedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed("cart");
+              Navigator.of(context).popAndPushNamed("cart");
             },
             child: Text(
               "Checkout",

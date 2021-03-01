@@ -19,7 +19,7 @@ class _CartState extends State<Cart> {
   List myOrder = [];
   String location;
   String transactionId;
-  String email;
+  String fullname;
 
   @override
   void initState() {
@@ -90,7 +90,56 @@ class _CartState extends State<Cart> {
     );
   }
 
-  pay() {}
+  Future<Widget> showOrderOptionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Center(
+              child: Text("CsKitchen"),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "FullName (use the same name on payment)"),
+                      onChanged: (value) {
+                        this.fullname = value;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      decoration: InputDecoration(labelText: "Location"),
+                      onChanged: (value) {
+                        this.location = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            contentPadding: const EdgeInsets.all(10),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Done"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
 
   placeCartOrder() async {
     var id = await widget.auth.currentUser();
@@ -98,8 +147,18 @@ class _CartState extends State<Cart> {
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
 
     if (myOrder != null) {
-      db.set({"$timeStamp": myOrder}, SetOptions(merge: true));
-      clearItems();
+      await showOrderOptionDialog(context);
+      if (fullname != null && location != null) {
+        db.set({
+          "fullname": "$fullname",
+          "location": location,
+          "myOrder": myOrder,
+          "orderTime": timeStamp,
+          "allOrders": {"$timeStamp": myOrder}
+        }, SetOptions(merge: true));
+        clearItems();
+        Navigator.of(context).popAndPushNamed("pay", arguments: totalPrice);
+      }
     } else {
       showAlertDialog(
           context, "Cs Kitchen", "Please add items to the cart first");
