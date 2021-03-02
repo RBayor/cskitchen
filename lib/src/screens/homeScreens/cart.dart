@@ -143,19 +143,26 @@ class _CartState extends State<Cart> {
 
   placeCartOrder() async {
     var id = await widget.auth.currentUser();
-    var db = FirebaseFirestore.instance.collection("orders").doc(id);
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
+    var orderDB = FirebaseFirestore.instance.collection("orders").doc(id);
+    var orderHistory =
+        FirebaseFirestore.instance.collection("orderHistory").doc("$timeStamp");
 
     if (myOrder != null) {
       await showOrderOptionDialog(context);
       if (fullname != null && location != null) {
-        db.set({
+        orderDB.set({
           "fullname": "$fullname",
           "location": location,
           "myOrder": myOrder,
           "orderTime": timeStamp,
           "allOrders": {"$timeStamp": myOrder}
         }, SetOptions(merge: true));
+        orderHistory.set({
+          "fullname": fullname,
+          "location": location,
+          "myOrder": myOrder,
+        });
         clearItems();
         Navigator.of(context).popAndPushNamed("pay", arguments: totalPrice);
       }
@@ -205,7 +212,6 @@ class _CartState extends State<Cart> {
     try {
       String orderedItem = json.encode(myOrder);
       prefs.setString("cart", orderedItem);
-      print("stored new orders");
     } catch (e) {
       print(e);
     }
@@ -240,6 +246,11 @@ class _CartState extends State<Cart> {
             ),
             key: Key("${order[index]['foodName']}$index"),
             onDismissed: (direction) {
+              setState(() {
+                order.removeAt(index);
+                computeOrder();
+                writeToPref();
+              });
               Scaffold.of(context).showSnackBar(
                 SnackBar(
                   duration: Duration(seconds: 1),
@@ -247,11 +258,6 @@ class _CartState extends State<Cart> {
                   content: Text("${order[index]['foodName']} has been removed"),
                 ),
               );
-              setState(() {
-                order.removeAt(index);
-                computeOrder();
-                writeToPref();
-              });
             },
             child: Card(
               elevation: 10,

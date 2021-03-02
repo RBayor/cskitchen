@@ -18,6 +18,12 @@ class _FooditemState extends State<Fooditem> {
   List<String> cart = [];
   List<int> foodQuantity = [1, 2, 3, 4, 5];
   int _selectedQuantity = 1;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(value)));
+  }
 
   Future _addToCart(String foodName, var foodPrice, int foodQuantity,
       String foodImg, String foodDetails) async {
@@ -38,6 +44,7 @@ class _FooditemState extends State<Fooditem> {
       String orderedItem = json.encode(purchaseArr);
       prefs.setString("cart", orderedItem);
       print(purchaseArr);
+      showInSnackBar("Item Added to Cart");
     } catch (e) {
       print(e);
     }
@@ -55,34 +62,35 @@ class _FooditemState extends State<Fooditem> {
     return purchase;
   }
 
-  showAlertDialog(BuildContext context, title, msg) {
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
+  // showAlertDialog(BuildContext context, title, msg) {
+  //   Widget okButton = FlatButton(
+  //     child: Text("OK"),
+  //     onPressed: () {
+  //       Navigator.of(context).pop();
+  //     },
+  //   );
 
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Text(msg),
-      actions: [
-        okButton,
-      ],
-    );
+  //   AlertDialog alert = AlertDialog(
+  //     title: Text(title),
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //     content: Text(msg),
+  //     actions: [
+  //       okButton,
+  //     ],
+  //   );
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -162,9 +170,10 @@ class _FooditemState extends State<Fooditem> {
                                     child: Text(
                                       "$quantity",
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.redAccent),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.redAccent,
+                                      ),
                                     ),
                                     value: quantity,
                                   );
