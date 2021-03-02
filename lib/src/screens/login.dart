@@ -88,68 +88,75 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
       resizeToAvoidBottomPadding: false,
-      body: Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                CircleAvatar(
-                    radius: 65,
-                    backgroundColor: Colors.white,
-                    child: Image(
-                      image: AssetImage("assets/cs_logo.png"),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 30,
-                    left: 30,
-                    right: 30,
-                    bottom: 10,
-                  ),
-                  child: TextFormField(
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      icon: Icon(
-                        Icons.phone_android,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/chips.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  CircleAvatar(
+                      radius: 65,
+                      backgroundColor: Colors.white,
+                      child: Image(
+                        image: AssetImage("assets/cs_logo.png"),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
                         color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
                       ),
-                      labelStyle: TextStyle(
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 30,
+                      left: 30,
+                      right: 30,
+                      bottom: 10,
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        icon: Icon(
+                          Icons.phone_android,
+                          color: Colors.white,
+                        ),
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onChanged: (value) => onNumber(value),
                     ),
-                    onChanged: (value) => onNumber(value),
                   ),
-                ),
-                RaisedButton(
-                  child: Text("Login"),
-                  color: Colors.white,
-                  onPressed: () =>
-                      isNumeric(phoneNo) ? loginUser(phoneNo, context) : null,
-                )
-              ],
+                  RaisedButton(
+                    child: Text("Login"),
+                    color: Colors.white,
+                    onPressed: () =>
+                        isNumeric(phoneNo) ? loginUser(phoneNo, context) : null,
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
