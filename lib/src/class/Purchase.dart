@@ -5,20 +5,22 @@ class Purchase {
   final String foodImg;
   final String foodDetail;
 
-  Purchase(
-      {this.foodName,
-      this.foodPrice,
-      this.foodQuantity,
-      this.foodImg,
-      this.foodDetail});
+  Purchase({
+    this.foodName,
+    this.foodPrice,
+    this.foodQuantity,
+    this.foodImg,
+    this.foodDetail,
+  });
 
   factory Purchase.fromJson(Map<String, dynamic> json) {
     return Purchase(
-        foodName: json["foodName"] ?? "",
-        foodPrice: json["foodPrice"] ?? "",
-        foodQuantity: json["foodQuantity"] ?? "",
-        foodImg: json["foodImg"] ?? "",
-        foodDetail: json["foodDetail"] ?? "");
+      foodName: json["foodName"] ?? "",
+      foodPrice: json["foodPrice"] ?? "",
+      foodQuantity: json["foodQuantity"] ?? "",
+      foodImg: json["foodImg"] ?? "",
+      foodDetail: json["foodDetail"] ?? "",
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +29,7 @@ class Purchase {
       "foodPrice": this.foodPrice,
       "foodQuantity": this.foodQuantity,
       "foodImg": this.foodImg,
-      "foodDetail": this.foodDetail
+      "foodDetail": this.foodDetail,
     };
   }
 }

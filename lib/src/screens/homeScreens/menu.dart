@@ -43,12 +43,13 @@ class _MenuState extends State<Menu> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Fooditem(
-                              snapshot.data[index]["food"],
-                              snapshot.data[index]["price"],
-                              imgUrl,
-                              snapshot.data[index]["foodDetails"],
-                            )),
+                      builder: (context) => Fooditem(
+                        snapshot.data[index]["food"],
+                        snapshot.data[index]["price"],
+                        imgUrl,
+                        snapshot.data[index]["foodDetails"],
+                      ),
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),

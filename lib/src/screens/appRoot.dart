@@ -50,7 +50,7 @@ class _AppRootState extends State<AppRoot> {
         );
     }
     return Scaffold(
-      body: Text("not signed in error"),
+      body: Text("No User"),
     );
   }
 }

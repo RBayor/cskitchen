@@ -155,14 +155,8 @@ class _CartState extends State<Cart> {
     if (myOrder != null) {
       await showOrderOptionDialog(context);
       if (fullname != null && location != null) {
-        print(phoneNumber);
         orderDB.set({
-          "fullname": "$fullname",
-          "location": location,
-          "myOrder": myOrder,
-          "orderTime": timeStamp,
-          "allOrders": {"$timeStamp": myOrder},
-          "phone": phoneNumber
+          "$timeStamp": myOrder,
         }, SetOptions(merge: true));
         orderHistory.set({
           "fullname": fullname,
@@ -172,7 +166,7 @@ class _CartState extends State<Cart> {
           "phone": phoneNumber
         });
         clearItems();
-        Navigator.of(context).popAndPushNamed("pay", arguments: totalPrice);
+        Navigator.of(context).pushNamed("pay", arguments: totalPrice);
       }
     } else {
       showAlertDialog(
@@ -207,6 +201,7 @@ class _CartState extends State<Cart> {
       myOrder.forEach((item) {
         temp += double.parse(item["foodQuantity"]) *
             double.parse(item["foodPrice"]);
+        print(item);
       });
       setState(() {
         totalPrice = temp;

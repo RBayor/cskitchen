@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Fooditem extends StatefulWidget {
-  Fooditem(this.food, this.price, this.foodImage, this.foodDetails);
+  Fooditem(
+    this.food,
+    this.price,
+    this.foodImage,
+    this.foodDetails,
+  );
   final String food;
   final price;
   final String foodImage;
@@ -25,12 +30,17 @@ class _FooditemState extends State<Fooditem> {
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
-  Future _addToCart(String foodName, var foodPrice, int foodQuantity,
-      String foodImg, String foodDetails) async {
+  Future _addToCart(
+    String foodName,
+    var foodPrice,
+    int foodQuantity,
+    String foodImg,
+    String foodDetails,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List purchaseArr = [];
     var myCart =
-        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails"}';
+        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails", }';
 
     try {
       await getCartItems().then((value) {
@@ -62,31 +72,6 @@ class _FooditemState extends State<Fooditem> {
     return purchase;
   }
 
-  // showAlertDialog(BuildContext context, title, msg) {
-  //   Widget okButton = FlatButton(
-  //     child: Text("OK"),
-  //     onPressed: () {
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-
-  //   AlertDialog alert = AlertDialog(
-  //     title: Text(title),
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //     content: Text(msg),
-  //     actions: [
-  //       okButton,
-  //     ],
-  //   );
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,11 +80,13 @@ class _FooditemState extends State<Fooditem> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              iconTheme: IconThemeData(
+                color: Colors.red,
+              ),
               pinned: true,
               floating: false,
-              elevation: 10,
-              title: Text("${widget.food}"),
-              expandedHeight: MediaQuery.of(context).size.height / 2,
+              elevation: 8,
+              expandedHeight: MediaQuery.of(context).size.height / 1.6,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   color: Colors.white,
@@ -125,6 +112,19 @@ class _FooditemState extends State<Fooditem> {
                           ),
                         )),
                   ),
+                  // Container(
+                  //   child: Padding(
+                  //       padding: const EdgeInsets.only(left: 20, top: 10),
+                  //       child: Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: Text(
+                  //           "Delivery GHS ${widget.deliveryFee}",
+                  //           style: TextStyle(
+                  //             fontSize: 16,
+                  //           ),
+                  //         ),
+                  //       )),
+                  // ),
                   Container(
                     child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 10),
@@ -197,8 +197,13 @@ class _FooditemState extends State<Fooditem> {
             child: FlatButton(
               child: Icon(Icons.add_shopping_cart),
               onPressed: () {
-                _addToCart(widget.food, widget.price, _selectedQuantity,
-                    widget.foodImage, widget.foodDetails);
+                _addToCart(
+                  widget.food,
+                  widget.price,
+                  _selectedQuantity,
+                  widget.foodImage,
+                  widget.foodDetails,
+                );
               },
             ),
           ),
