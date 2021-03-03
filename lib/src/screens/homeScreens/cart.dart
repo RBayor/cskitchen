@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cskitchen/src/screens/homeScreens/pay.dart';
+// import 'package:cskitchen/src/screens/homeScreens/pay.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,7 +110,8 @@ class _CartState extends State<Cart> {
                     padding: const EdgeInsets.all(10),
                     child: TextField(
                       decoration: InputDecoration(
-                          labelText: "FullName (use the same name on payment)"),
+                          labelText:
+                              "Full Name (use the same name on payment)"),
                       onChanged: (value) {
                         this.fullname = value;
                       },
@@ -119,7 +120,8 @@ class _CartState extends State<Cart> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: TextField(
-                      decoration: InputDecoration(labelText: "Location"),
+                      decoration:
+                          InputDecoration(labelText: "Delivery Location"),
                       onChanged: (value) {
                         this.location = value;
                       },
@@ -161,6 +163,7 @@ class _CartState extends State<Cart> {
         orderHistory.set({
           "fullname": fullname,
           "location": location,
+          "time": timeStamp,
           "myOrder": myOrder,
         });
         clearItems();

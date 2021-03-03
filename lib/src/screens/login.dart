@@ -13,6 +13,12 @@ class _LoginState extends State<Login> {
   String smsCode;
   String verificationId;
   static const String countryCode = "+233";
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(value)));
+  }
 
   Future loginUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,7 +35,7 @@ class _LoginState extends State<Login> {
           });
         },
         verificationFailed: (FirebaseAuthException authException) {
-          print(authException);
+          showInSnackBar("An Error Occured! Please try again");
         },
         codeSent: (String verificationId, [int forceResendToken]) {
           showDialog(
@@ -89,6 +95,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
