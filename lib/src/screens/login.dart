@@ -63,12 +63,7 @@ class _LoginState extends State<Login> {
                       smsCode: smsCode,
                     );
                     auth.signInWithCredential(_credential).then((value) {
-                      var db = FirebaseFirestore.instance
-                          .collection("orders")
-                          .doc(value.user.uid);
-                      print(value.user.uid);
-                      db.set({"phone": value.user.phoneNumber});
-                      Navigator.of(context).pushReplacementNamed("home");
+                      Navigator.of(context).popAndPushNamed("home");
                     }).catchError((e) {
                       print(e);
                     });
@@ -160,8 +155,9 @@ class _LoginState extends State<Login> {
                   RaisedButton(
                     child: Text("Login"),
                     color: Colors.white,
-                    onPressed: () =>
-                        isNumeric(phoneNo) ? loginUser(phoneNo, context) : null,
+                    onPressed: () => isNumeric(phoneNo)
+                        ? loginUser(phoneNo, context)
+                        : showInSnackBar("Please check your Phone number"),
                   )
                 ],
               ),

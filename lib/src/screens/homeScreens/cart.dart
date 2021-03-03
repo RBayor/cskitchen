@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Cart extends StatefulWidget {
   Cart(this.auth);
   final BaseAuth auth;
+
   @override
   _CartState createState() => _CartState();
 }
@@ -145,6 +146,7 @@ class _CartState extends State<Cart> {
 
   placeCartOrder() async {
     var id = await widget.auth.currentUser();
+    var phoneNumber = await widget.auth.currentPhone();
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
     var orderDB = FirebaseFirestore.instance.collection("orders").doc(id);
     var orderHistory =
@@ -153,18 +155,21 @@ class _CartState extends State<Cart> {
     if (myOrder != null) {
       await showOrderOptionDialog(context);
       if (fullname != null && location != null) {
+        print(phoneNumber);
         orderDB.set({
           "fullname": "$fullname",
           "location": location,
           "myOrder": myOrder,
           "orderTime": timeStamp,
-          "allOrders": {"$timeStamp": myOrder}
+          "allOrders": {"$timeStamp": myOrder},
+          "phone": phoneNumber
         }, SetOptions(merge: true));
         orderHistory.set({
           "fullname": fullname,
           "location": location,
           "time": timeStamp,
           "myOrder": myOrder,
+          "phone": phoneNumber
         });
         clearItems();
         Navigator.of(context).popAndPushNamed("pay", arguments: totalPrice);
