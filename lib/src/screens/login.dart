@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -61,11 +62,14 @@ class _LoginState extends State<Login> {
                       verificationId: verificationId,
                       smsCode: smsCode,
                     );
-                    auth
-                        .signInWithCredential(_credential)
-                        .then((value) =>
-                            Navigator.of(context).pushReplacementNamed("home"))
-                        .catchError((e) {
+                    auth.signInWithCredential(_credential).then((value) {
+                      var db = FirebaseFirestore.instance
+                          .collection("orders")
+                          .doc(value.user.uid);
+                      print(value.user.uid);
+                      db.set({"phone": value.user.phoneNumber});
+                      Navigator.of(context).pushReplacementNamed("home");
+                    }).catchError((e) {
                       print(e);
                     });
                   },
