@@ -40,7 +40,7 @@ class _FooditemState extends State<Fooditem> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List purchaseArr = [];
     var myCart =
-        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails", }';
+        '{"foodName" : "$foodName", "foodPrice" : "${foodPrice.toString()}", "foodQuantity": "${foodQuantity.toString()}", "foodImg": "$foodImg","foodDetail": "$foodDetails" }';
 
     try {
       await getCartItems().then((value) {
