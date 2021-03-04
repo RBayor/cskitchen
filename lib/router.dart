@@ -14,6 +14,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => Cart(Auth()));
     case 'pay':
       return MaterialPageRoute(builder: (context) => Pay(bill: arguments));
+    case 'login':
+      return MaterialPageRoute(builder: (context) => Login());
     default:
       return MaterialPageRoute(builder: (context) => Login());
   }

@@ -23,15 +23,6 @@ class _HomeState extends State<Home> {
   List<Widget> pages;
   Widget currentPage;
 
-  void _signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      setState(() {
-        widget.onSignedOut();
-      });
-    } catch (e) {}
-  }
-
   @override
   void initState() {
     super.initState();
@@ -50,16 +41,9 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Cs Kitchen",
+          "Cs kitchen",
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
-        actions: <Widget>[
-          IconButton(
-            tooltip: "Sign Out",
-            icon: Icon(Icons.exit_to_app),
-            onPressed: _signOut,
-          )
-        ],
       ),
       body: Stack(
         children: <Widget>[currentPage],

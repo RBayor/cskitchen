@@ -1,5 +1,4 @@
 import 'package:cskitchen/src/components/auth.dart';
-// import 'package:cskitchen/src/screens/user/myOrders.dart';
 import 'package:cskitchen/src/screens/user/privacy.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +12,13 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final formKey = GlobalKey<FormState>();
 
+  void _signOut() {
+    try {
+      widget.auth.signOut();
+      Navigator.of(context).pushReplacementNamed("login");
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +30,7 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.only(left: 10),
                 child: ListView(
                   children: <Widget>[
-                    Divider(),
+                    // Divider(),
                     ListTile(
                       onTap: () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Privacy())),
@@ -51,6 +57,15 @@ class _ProfileState extends State<Profile> {
                         color: Colors.redAccent,
                       ),
                       title: Text("Developer"),
+                    ),
+                    Divider(),
+                    ListTile(
+                      onTap: _signOut,
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.redAccent,
+                      ),
+                      title: Text("Logout"),
                     ),
                   ],
                 ),

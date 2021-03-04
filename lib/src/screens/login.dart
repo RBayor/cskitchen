@@ -13,11 +13,11 @@ class _LoginState extends State<Login> {
   String smsCode;
   String verificationId;
   static const String countryCode = "+233";
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState
+    scaffoldMessengerKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
@@ -33,13 +33,16 @@ class _LoginState extends State<Login> {
         verificationCompleted: (AuthCredential credential) async {
           await _auth
               .signInWithCredential(credential)
-              .then((value) => Navigator.popAndPushNamed(context, "home"))
+              .then((value) => Navigator.pushReplacementNamed(context, "home"))
               .catchError((e) {
             print(e);
           });
         },
         verificationFailed: (FirebaseAuthException authException) {
-          showInSnackBar("An Error Occured! Please try again");
+          setState(() {
+            isloading = false;
+          });
+          showInSnackBar("Unable to verify your number. Please try again");
         },
         codeSent: (String verificationId, [int forceResendToken]) {
           setState(() {
@@ -62,9 +65,6 @@ class _LoginState extends State<Login> {
                 TextButton(
                   child: Text("Done"),
                   onPressed: () {
-                    setState(() {
-                      isloading = true;
-                    });
                     FirebaseAuth auth = FirebaseAuth.instance;
                     var smsCode = _codeController.text.trim();
                     var _credential = PhoneAuthProvider.credential(
@@ -72,7 +72,8 @@ class _LoginState extends State<Login> {
                       smsCode: smsCode,
                     );
                     auth.signInWithCredential(_credential).then((value) {
-                      Navigator.of(context).popAndPushNamed("home");
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          'home', (Route<dynamic> route) => false);
                     }).catchError((e) {
                       print(e);
                     });
@@ -93,7 +94,7 @@ class _LoginState extends State<Login> {
   }
 
   bool isNumeric(String p) {
-    if (p == null) {
+    if (p == null || p == "") {
       return false;
     }
     return double.tryParse(p) != null;
@@ -102,105 +103,121 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return isloading
-        ? Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.white,
-                  child: Image(
-                    image: AssetImage("assets/cs_icon.png"),
-                  ),
-                ),
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ],
-            ),
-          )
-        : Scaffold(
-            resizeToAvoidBottomInset: false,
-            key: _scaffoldKey,
-            body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/chips.jpg"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 100),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        CircleAvatar(
-                            radius: 65,
-                            backgroundColor: Colors.white,
-                            child: Image(
-                              image: AssetImage("assets/cs_logo.png"),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 30,
-                            left: 30,
-                            right: 30,
-                            bottom: 10,
-                          ),
-                          child: TextFormField(
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: 'Phone Number',
-                              icon: Icon(
-                                Icons.phone_android,
-                                color: Colors.white,
-                              ),
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                            onChanged: (value) => onNumber(value),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () => isNumeric(phoneNo)
-                                ? loginUser(phoneNo, context)
-                                : ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Please Enter a Valid Phone Number',
-                                      ),
-                                    ),
-                                  ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text("LOGIN"),
-                            ),
-                          ),
-                        )
-                      ],
+        ? ScaffoldMessenger(
+            key: scaffoldMessengerKey,
+            child: Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Colors.white,
+                    child: Image(
+                      image: AssetImage("assets/cs_icon.png"),
                     ),
                   ),
+                  Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ],
+              ),
+            ),
+          )
+        : ScaffoldMessenger(
+            key: scaffoldMessengerKey,
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/chips.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          CircleAvatar(
+                              radius: 55,
+                              backgroundColor: Colors.white,
+                              child: Image(
+                                image: AssetImage("assets/cs_logo.png"),
+                              )),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(10),
+                          //   child: Text(
+                          //     "Login",
+                          //     style: TextStyle(
+                          //       color: Colors.white,
+                          //       fontSize: 25,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 100,
+                              left: 40,
+                              right: 40,
+                              bottom: 10,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black38,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: TextFormField(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelText: 'Phone Number',
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    icon: Icon(
+                                      Icons.phone_android,
+                                      color: Colors.white,
+                                    ),
+                                    labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onChanged: (value) => onNumber(value),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () => isNumeric(phoneNo)
+                                  ? loginUser(phoneNo, context)
+                                  : showInSnackBar(
+                                      "Please Enter a Valid Phone Number"),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text("LOGIN"),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
