@@ -26,7 +26,9 @@ class _HomeState extends State<Home> {
   void _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      widget.onSignedOut();
+      setState(() {
+        widget.onSignedOut();
+      });
     } catch (e) {}
   }
 

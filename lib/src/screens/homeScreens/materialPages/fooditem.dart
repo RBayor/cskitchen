@@ -23,10 +23,11 @@ class _FooditemState extends State<Fooditem> {
   List<String> cart = [];
   List<int> foodQuantity = [1, 2, 3, 4, 5];
   int _selectedQuantity = 1;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState
+    scaffoldMessengerKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
@@ -53,8 +54,9 @@ class _FooditemState extends State<Fooditem> {
       purchaseArr.add(Purchase.fromJson(cartMap));
       String orderedItem = json.encode(purchaseArr);
       prefs.setString("cart", orderedItem);
-      print(purchaseArr);
-      showInSnackBar("Item Added to Cart");
+
+      showInSnackBar(
+          '${cartMap["foodQuantity"]} orders of ${cartMap["foodName"]} have been added to cart');
     } catch (e) {
       print(e);
     }
@@ -74,150 +76,152 @@ class _FooditemState extends State<Fooditem> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Container(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              iconTheme: IconThemeData(
-                color: Colors.red,
-              ),
-              pinned: true,
-              floating: false,
-              elevation: 8,
-              expandedHeight: MediaQuery.of(context).size.height / 1.6,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  color: Colors.white,
-                  child: Image(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.foodImage),
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        body: Container(
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                iconTheme: IconThemeData(
+                  color: Colors.red,
+                ),
+                floating: true,
+                expandedHeight: MediaQuery.of(context).size.height / 1.6,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    color: Colors.white,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(widget.foodImage),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 10),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "GHS ${widget.price}",
+                              style:
+                                  TextStyle(fontSize: 25, fontFamily: "Cookie"),
+                            ),
+                          )),
+                    ),
+                    // Container(
+                    //   child: Padding(
+                    //       padding: const EdgeInsets.only(left: 20, top: 10),
+                    //       child: Align(
+                    //         alignment: Alignment.centerLeft,
+                    //         child: Text(
+                    //           "Delivery GHS ${widget.deliveryFee}",
+                    //           style: TextStyle(
+                    //             fontSize: 16,
+                    //           ),
+                    //         ),
+                    //       )),
+                    // ),
+                    Container(
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "${widget.food}",
+                              style: TextStyle(
+                                  fontSize: 35, fontFamily: "Caveat Bold"),
+                            ),
+                          )),
+                    ),
+                    Container(
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 15),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "${widget.foodDetails}",
+                              style: TextStyle(
+                                  fontSize: 20, fontFamily: "kalam Regular"),
+                            ),
+                          )),
+                    ),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10, left: 20),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            "GHS ${widget.price}",
-                            style:
-                                TextStyle(fontSize: 25, fontFamily: "Cookie"),
-                          ),
-                        )),
-                  ),
-                  // Container(
-                  //   child: Padding(
-                  //       padding: const EdgeInsets.only(left: 20, top: 10),
-                  //       child: Align(
-                  //         alignment: Alignment.centerLeft,
-                  //         child: Text(
-                  //           "Delivery GHS ${widget.deliveryFee}",
-                  //           style: TextStyle(
-                  //             fontSize: 16,
-                  //           ),
-                  //         ),
-                  //       )),
-                  // ),
-                  Container(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 10),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "${widget.food}",
-                            style: TextStyle(
-                                fontSize: 35, fontFamily: "Caveat Bold"),
-                          ),
-                        )),
-                  ),
-                  Container(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 15),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "${widget.foodDetails}",
-                            style: TextStyle(
-                                fontSize: 20, fontFamily: "kalam Regular"),
-                          ),
-                        )),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 20),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                            width: 50,
-                            height: 50,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<int>(
-                                value: _selectedQuantity,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _selectedQuantity = newValue;
-                                  });
-                                },
-                                items: foodQuantity.map((quantity) {
-                                  return DropdownMenuItem(
-                                    child: Text(
-                                      "$quantity",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent,
+                          child: Container(
+                              width: 50,
+                              height: 50,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  value: _selectedQuantity,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _selectedQuantity = newValue;
+                                    });
+                                  },
+                                  items: foodQuantity.map((quantity) {
+                                    return DropdownMenuItem(
+                                      child: Text(
+                                        "$quantity",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent,
+                                        ),
                                       ),
-                                    ),
-                                    value: quantity,
-                                  );
-                                }).toList(),
-                              ),
-                            )),
+                                      value: quantity,
+                                    );
+                                  }).toList(),
+                                ),
+                              )),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextButton(
+                child: Icon(Icons.add_shopping_cart),
+                onPressed: () {
+                  _addToCart(
+                    widget.food,
+                    widget.price,
+                    _selectedQuantity,
+                    widget.foodImage,
+                    widget.foodDetails,
+                  );
+                },
               ),
-            )
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green)),
+              onPressed: () {
+                Navigator.of(context).popAndPushNamed("cart");
+              },
+              child: Text(
+                "Checkout",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: FlatButton(
-              child: Icon(Icons.add_shopping_cart),
-              onPressed: () {
-                _addToCart(
-                  widget.food,
-                  widget.price,
-                  _selectedQuantity,
-                  widget.foodImage,
-                  widget.foodDetails,
-                );
-              },
-            ),
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context).popAndPushNamed("cart");
-            },
-            child: Text(
-              "Checkout",
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Colors.green,
-          ),
-        ],
       ),
     );
   }

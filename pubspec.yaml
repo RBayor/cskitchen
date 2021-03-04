@@ -1,7 +1,7 @@
 name: cskitchen
-description: A restaurant management app.
+description: cskitchen food ordering app.
 
-version: 0.0.1+10
+version: 0.0.1+11
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -9,25 +9,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^0.1.2
-  firebase_auth: ^0.18.3
-  cloud_firestore: ^0.14.3
-  shared_preferences: ^0.5.12+4
-  http: ^0.12.0+4
-  webview_flutter: ^1.0.7
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^1.0.0
+  cloud_firestore: ^1.0.0
+  shared_preferences: ^2.0.3
+  http: ^0.13.0
+  webview_flutter: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.2+1
+  flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
-  image_path: "assets/cs_icon.png"
+  image_path: "assets/cs_icon1.png"
   android: true
   ios: true
   adaptive_icon_background: "#FFFFFFFF"
-  adaptive_icon_foreground: "assets/cs_icon.png"
+  adaptive_icon_foreground: "assets/cs_icon1.png"
 
 flutter:
   uses-material-design: true
@@ -35,6 +34,7 @@ flutter:
   assets:
     - assets/chips.jpg
     - assets/cs_icon.png
+    - assets/cs_icon1.png
     - assets/cs_logo.png
 
   fonts:

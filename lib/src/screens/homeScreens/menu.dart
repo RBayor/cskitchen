@@ -72,35 +72,41 @@ class _MenuState extends State<Menu> {
                           children: <Widget>[
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 10, bottom: 10),
-                              child: RaisedButton(
-                                elevation: 0,
-                                color: Colors.black26,
-                                onPressed: () {},
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  "${snapshot.data[index]["food"]}",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                                  const EdgeInsets.only(left: 10, bottom: 5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.black38,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "${snapshot.data[index]["food"]}",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 10, bottom: 10),
-                              child: RaisedButton(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                onPressed: () {},
-                                color: Colors.black26,
-                                child: Text(
-                                  "Ghs ${snapshot.data[index]["price"]}",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
+                                  const EdgeInsets.only(left: 10, bottom: 5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.black38,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Ghs ${snapshot.data[index]["price"]}",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -121,51 +127,3 @@ class _MenuState extends State<Menu> {
     );
   }
 }
-
-// Padding(
-//                   padding: EdgeInsets.only(top: 5),
-//                   child: ListTile(
-//                     leading: Container(child: Image.network(imgUrl)),
-//                     title: Text(
-//                       snapshot.data[index]["food"],
-//                     ),
-//                     subtitle: Text('Ghs ${snapshot.data[index]["price"]}'),
-//                   ),
-//                 ),
-
-// Card(
-//                       clipBehavior: Clip.antiAlias,
-//                       elevation: 5.0,
-//                       shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(25.0)),
-//                       child: Container(
-//                         height: MediaQuery.of(context).size.height / 3.3,
-//                         decoration: BoxDecoration(
-//                           image: DecorationImage(
-//                             image: NetworkImage(snapshot.data[index]["img"]),
-//                             fit: BoxFit.cover,
-//                           ),
-//                         ),
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.end,
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: <Widget>[
-//                             Padding(
-//                               padding:
-//                                   const EdgeInsets.only(left: 10, bottom: 10),
-//                               child: RaisedButton(
-//                                 shape: RoundedRectangleBorder(
-//                                   borderRadius: BorderRadius.circular(20),
-//                                 ),
-//                                 onPressed: () {},
-//                                 color: Colors.transparent,
-//                                 child: Text(
-//                                   "Ghs ${snapshot.data[index]["price"]}",
-//                                   style: TextStyle(
-//                                       fontSize: 20, color: Colors.red),
-//                                 ),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       )),

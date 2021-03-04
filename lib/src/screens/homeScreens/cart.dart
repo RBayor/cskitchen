@@ -67,7 +67,7 @@ class _CartState extends State<Cart> {
   }
 
   showAlertDialog(BuildContext context, title, msg) {
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.of(context).pop();
@@ -133,7 +133,7 @@ class _CartState extends State<Cart> {
             ),
             contentPadding: const EdgeInsets.all(10),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("Done"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -201,7 +201,6 @@ class _CartState extends State<Cart> {
       myOrder.forEach((item) {
         temp += double.parse(item["foodQuantity"]) *
             double.parse(item["foodPrice"]);
-        print(item);
       });
       setState(() {
         totalPrice = temp;
@@ -249,18 +248,18 @@ class _CartState extends State<Cart> {
             ),
             key: Key("${order[index]['foodName']}$index"),
             onDismissed: (direction) {
-              setState(() {
-                order.removeAt(index);
-                computeOrder();
-                writeToPref();
-              });
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   duration: Duration(seconds: 1),
                   elevation: 10,
                   content: Text("${order[index]['foodName']} has been removed"),
                 ),
               );
+              setState(() {
+                order.removeAt(index);
+                computeOrder();
+                writeToPref();
+              });
             },
             child: Card(
               elevation: 10,
