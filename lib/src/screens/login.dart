@@ -45,6 +45,7 @@ class _LoginState extends State<Login> {
           showInSnackBar("Unable to verify your number. Please try again");
         },
         codeSent: (String verificationId, [int forceResendToken]) {
+          showInSnackBar("Sending Verification Code");
           setState(() {
             isloading = false;
           });

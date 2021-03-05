@@ -1,7 +1,7 @@
 name: cskitchen
 description: cskitchen food ordering app.
 
-version: 0.0.1+11
+version: 0.0.1+12
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
