@@ -17,10 +17,10 @@ class _CartState extends State<Cart> {
   var food = [], quantity = [], price = [];
   var totalPrice = 0.0;
 
-  List myOrder = [];
-  String location;
-  String transactionId;
-  String fullname;
+  List? myOrder = [];
+  String? location;
+  String? transactionId;
+  String? fullname;
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _CartState extends State<Cart> {
     );
   }
 
-  Future<Widget> showOrderOptionDialog(BuildContext context) {
+  Future<Widget?> showOrderOptionDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -178,18 +178,18 @@ class _CartState extends State<Cart> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       prefs.clear();
-      myOrder.clear();
+      myOrder!.clear();
       computeOrder();
     } catch (e) {
-      print(e.message);
+      print(e);
     }
   }
 
-  Future<List> getCartItems() async {
+  Future<List?> getCartItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List purchase;
+    List? purchase;
     try {
-      List items = jsonDecode(prefs.getString("cart"));
+      List? items = jsonDecode(prefs.getString("cart")!);
       purchase = items;
     } catch (e) {}
     return purchase;
@@ -198,7 +198,7 @@ class _CartState extends State<Cart> {
   computeOrder() {
     var temp = 0.0;
     if (myOrder != null) {
-      myOrder.forEach((item) {
+      myOrder!.forEach((item) {
         temp += double.parse(item["foodQuantity"]) *
             double.parse(item["foodPrice"]);
       });
@@ -220,7 +220,7 @@ class _CartState extends State<Cart> {
   }
 
   Widget cartProducts(context) {
-    if (myOrder == null || myOrder.isEmpty) {
+    if (myOrder == null || myOrder!.isEmpty) {
       return Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -239,9 +239,9 @@ class _CartState extends State<Cart> {
       ));
     } else {
       return ListView.builder(
-        itemCount: myOrder.length ?? 0,
+        itemCount: myOrder!.length,
         itemBuilder: (_, index) {
-          var order = myOrder;
+          var order = myOrder!;
           return Dismissible(
             background: Container(
               color: Colors.redAccent,

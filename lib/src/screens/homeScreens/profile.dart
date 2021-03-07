@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
   Profile({this.auth});
-  final BaseAuth auth;
+  final BaseAuth? auth;
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -14,7 +14,7 @@ class _ProfileState extends State<Profile> {
 
   void _signOut() {
     try {
-      widget.auth.signOut();
+      widget.auth!.signOut();
       Navigator.of(context).pushReplacementNamed("login");
     } catch (e) {}
   }

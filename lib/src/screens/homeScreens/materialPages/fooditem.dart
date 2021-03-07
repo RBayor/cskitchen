@@ -10,9 +10,9 @@ class Fooditem extends StatefulWidget {
     this.foodImage,
     this.foodDetails,
   );
-  final String food;
+  final String? food;
   final price;
-  final String foodImage;
+  final String? foodImage;
   final foodDetails;
 
   @override
@@ -22,21 +22,21 @@ class Fooditem extends StatefulWidget {
 class _FooditemState extends State<Fooditem> {
   List<String> cart = [];
   List<int> foodQuantity = [1, 2, 3, 4, 5];
-  int _selectedQuantity = 1;
+  int? _selectedQuantity = 1;
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   void showInSnackBar(String value) {
-    scaffoldMessengerKey.currentState
+    scaffoldMessengerKey.currentState!
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
   Future _addToCart(
-    String foodName,
+    String? foodName,
     var foodPrice,
-    int foodQuantity,
-    String foodImg,
-    String foodDetails,
+    int? foodQuantity,
+    String? foodImg,
+    String? foodDetails,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List purchaseArr = [];
@@ -51,7 +51,7 @@ class _FooditemState extends State<Fooditem> {
       });
 
       Map cartMap = jsonDecode(myCart);
-      purchaseArr.add(Purchase.fromJson(cartMap));
+      purchaseArr.add(Purchase.fromJson(cartMap as Map<String, dynamic>));
       String orderedItem = json.encode(purchaseArr);
       prefs.setString("cart", orderedItem);
 
@@ -62,11 +62,11 @@ class _FooditemState extends State<Fooditem> {
     }
   }
 
-  Future<List> getCartItems() async {
+  Future<List?> getCartItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List purchase;
+    List? purchase;
     try {
-      List items = jsonDecode(prefs.getString("cart")) ?? null;
+      List? items = jsonDecode(prefs.getString("cart")!) ?? null;
       purchase = items;
     } catch (e) {
       print(e);
@@ -93,7 +93,7 @@ class _FooditemState extends State<Fooditem> {
                     color: Colors.white,
                     child: Image(
                       fit: BoxFit.cover,
-                      image: NetworkImage(widget.foodImage),
+                      image: NetworkImage(widget.foodImage!),
                     ),
                   ),
                 ),

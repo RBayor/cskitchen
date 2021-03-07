@@ -1,5 +1,5 @@
 import 'package:cskitchen/src/components/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/screens/homeScreens/menu.dart';
 import 'package:cskitchen/src/screens/homeScreens/cart.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/widgets.dart';
 
 class Home extends StatefulWidget {
   Home({this.auth, this.onSignedOut});
-  final BaseAuth auth;
-  final VoidCallback onSignedOut;
+  final BaseAuth? auth;
+  final VoidCallback? onSignedOut;
   @override
   _HomeState createState() => _HomeState();
 }
@@ -17,11 +17,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int currentTab = 0;
 
-  Menu menu;
-  Cart cart;
-  Profile profile;
-  List<Widget> pages;
-  Widget currentPage;
+  late Menu menu;
+  late Cart cart;
+  late Profile profile;
+  late List<Widget> pages;
+  late Widget currentPage;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Stack(
-        children: <Widget>[currentPage],
+        children: [currentPage],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,

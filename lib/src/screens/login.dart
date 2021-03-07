@@ -9,15 +9,15 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _codeController = TextEditingController();
   bool isloading = false;
-  String phoneNo;
-  String smsCode;
-  String verificationId;
+  String? phoneNo;
+  String? smsCode;
+  String? verificationId;
   static const String countryCode = "+233";
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   void showInSnackBar(String value) {
-    scaffoldMessengerKey.currentState
+    scaffoldMessengerKey.currentState!
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
           });
           showInSnackBar("Unable to verify your number. Please try again");
         },
-        codeSent: (String verificationId, [int forceResendToken]) {
+        codeSent: (String verificationId, [int? forceResendToken]) {
           showInSnackBar("Sending Verification Code");
           setState(() {
             isloading = false;
@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
     return phoneNo = countryCode + val;
   }
 
-  bool isNumeric(String p) {
+  bool isNumeric(String? p) {
     if (p == null || p == "") {
       return false;
     }
@@ -143,22 +143,12 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           CircleAvatar(
-                              radius: 55,
-                              backgroundColor: Colors.white,
-                              child: Image(
-                                image: AssetImage("assets/cs_logo.png"),
-                              )),
-                          // Padding(
-                          //   padding: const EdgeInsets.all(10),
-                          //   child: Text(
-                          //     "Login",
-                          //     style: TextStyle(
-                          //       color: Colors.white,
-                          //       fontSize: 25,
-                          //       fontWeight: FontWeight.w600,
-                          //     ),
-                          //   ),
-                          // ),
+                            radius: 55,
+                            backgroundColor: Colors.white,
+                            child: Image(
+                              image: AssetImage("assets/cs_logo.png"),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(
                               top: 100,
@@ -205,9 +195,10 @@ class _LoginState extends State<Login> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               onPressed: () => isNumeric(phoneNo)
-                                  ? loginUser(phoneNo, context)
+                                  ? loginUser(phoneNo!, context)
                                   : showInSnackBar(
-                                      "Please Enter a Valid Phone Number"),
+                                      "Please Enter a Valid Phone Number",
+                                    ),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text("LOGIN"),

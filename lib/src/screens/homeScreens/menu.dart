@@ -8,11 +8,12 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  Future getMenu() async {
-    var db = FirebaseFirestore.instance;
-    QuerySnapshot menu = await db.collection("menu").get();
-    return menu.docs;
-  }
+  // Future getMenu() async {
+  //   var db = FirebaseFirestore.instance;
+  //   QuerySnapshot menu = db.collection("menu").get();
+  //   FirebaseFirestore.instance.collection("menu").get()
+  //   return menu.docs;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +25,32 @@ class _MenuState extends State<Menu> {
           fit: BoxFit.cover,
         ),
       ),
-      child: FutureBuilder(
-        future: getMenu(),
-        builder: (_, snapshot) {
+      child: FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance.collection("menu").get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            final List<DocumentSnapshot> documents = snapshot.data!.docs;
             return ListView.builder(
               shrinkWrap: false,
               scrollDirection: Axis.vertical,
-              itemCount: snapshot.data.length,
+              itemCount: documents.length,
               itemBuilder: (_, index) {
-                String imgUrl = snapshot.data[index]["img"];
+                String? imgUrl = documents[index]["img"];
                 return InkWell(
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Fooditem(
-                        snapshot.data[index]["food"],
-                        snapshot.data[index]["price"],
+                        documents[index]["food"],
+                        documents[index]["price"],
                         imgUrl,
-                        snapshot.data[index]["foodDetails"],
+                        documents[index]["foodDetails"],
                       ),
                     ),
                   ),
@@ -62,7 +65,7 @@ class _MenuState extends State<Menu> {
                         height: 250,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(snapshot.data[index]["img"]),
+                            image: NetworkImage(documents[index]["img"]),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -81,7 +84,7 @@ class _MenuState extends State<Menu> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "${snapshot.data[index]["food"]}",
+                                    "${documents[index]["food"]}",
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
@@ -101,7 +104,7 @@ class _MenuState extends State<Menu> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "Ghs ${snapshot.data[index]["price"]}",
+                                    "Ghs ${documents[index]["price"]}",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.white,

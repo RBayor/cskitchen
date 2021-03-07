@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AppRoot extends StatefulWidget {
   AppRoot({this.auth});
-  final BaseAuth auth;
+  final BaseAuth? auth;
   @override
   _AppRootState createState() => _AppRootState();
 }
@@ -19,7 +19,7 @@ class _AppRootState extends State<AppRoot> {
   void initState() {
     super.initState();
 
-    widget.auth.currentUser().then((userId) {
+    widget.auth!.currentUser().then((userId) {
       setState(() {
         authState = userId == null ? AuthState.notSignedIn : AuthState.signedIn;
       });
@@ -49,8 +49,5 @@ class _AppRootState extends State<AppRoot> {
           onSignedOut: _signedOut,
         );
     }
-    return Scaffold(
-      body: Text("No User"),
-    );
   }
 }

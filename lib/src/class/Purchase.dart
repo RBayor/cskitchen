@@ -1,9 +1,9 @@
 class Purchase {
-  final String foodName;
-  final String foodPrice;
-  final String foodQuantity;
-  final String foodImg;
-  final String foodDetail;
+  final String? foodName;
+  final String? foodPrice;
+  final String? foodQuantity;
+  final String? foodImg;
+  final String? foodDetail;
 
   Purchase({
     this.foodName,
