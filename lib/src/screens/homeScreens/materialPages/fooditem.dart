@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cskitchen/src/class/Purchase.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -87,16 +88,21 @@ class _FooditemState extends State<Fooditem> {
                   color: Colors.red,
                 ),
                 floating: true,
-                expandedHeight: MediaQuery.of(context).size.height / 1.6,
+                expandedHeight: 250,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    color: Colors.white,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(widget.foodImage!),
+                    background: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  imageUrl: widget.foodImage!,
+                  placeholder: (_, __) => Image.asset("assets/cs_icon.png"),
+                )
+                    // Container(
+                    //   color: Colors.white,
+                    //   child: Image(
+                    //     fit: BoxFit.cover,
+                    //     image: NetworkImage(widget.foodImage!),
+                    //   ),
+                    // ),
                     ),
-                  ),
-                ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cskitchen/src/screens/homeScreens/pay.dart';
 import 'package:flutter/material.dart';
 import 'package:cskitchen/src/components/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,11 +15,13 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   var food = [], quantity = [], price = [];
   var totalPrice = 0.0;
+  bool isDelivery = false;
+  static const deliveryCharge = 4;
 
   List? myOrder = [];
-  String? location;
+  String? location = "";
   String? transactionId;
-  String? fullname;
+  String? fullname = "";
 
   @override
   void initState() {
@@ -94,13 +95,24 @@ class _CartState extends State<Cart> {
   Future<Widget?> showOrderOptionDialog(BuildContext context) {
     return showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             title: Center(
-              child: Text("CsKitchen"),
+              child: Column(
+                children: [
+                  Text(
+                    "Cs kitchen",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    "Delivery will be included during payment",
+                    style: TextStyle(fontSize: 12),
+                  )
+                ],
+              ),
             ),
             content: SingleChildScrollView(
               child: Column(
@@ -121,8 +133,8 @@ class _CartState extends State<Cart> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: TextField(
-                      decoration:
-                          InputDecoration(labelText: "Delivery Location"),
+                      decoration: InputDecoration(
+                          labelText: "Location (Landmark if Pickup)"),
                       onChanged: (value) {
                         this.location = value;
                       },
@@ -134,8 +146,16 @@ class _CartState extends State<Cart> {
             contentPadding: const EdgeInsets.all(10),
             actions: <Widget>[
               TextButton(
-                child: Text("Done"),
+                child: Text("PICK UP"),
                 onPressed: () {
+                  isDelivery = false;
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("DELIVERY"),
+                onPressed: () {
+                  isDelivery = true;
                   Navigator.of(context).pop();
                 },
               )
@@ -145,6 +165,24 @@ class _CartState extends State<Cart> {
   }
 
   placeCartOrder() async {
+    if (myOrder != null) {
+      await showOrderOptionDialog(context).then((value) {
+        switch (isDelivery) {
+          case true:
+            return sendOrderDelivery();
+          case false:
+            return sendOrderPickup();
+          default:
+            return null;
+        }
+      });
+    } else {
+      showAlertDialog(
+          context, "Cs Kitchen", "Please add items to the cart first");
+    }
+  }
+
+  sendOrderPickup() async {
     var id = await widget.auth.currentUser();
     var phoneNumber = await widget.auth.currentPhone();
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -152,29 +190,60 @@ class _CartState extends State<Cart> {
     var orderHistory =
         FirebaseFirestore.instance.collection("orderHistory").doc("$timeStamp");
 
-    if (myOrder != null) {
-      await showOrderOptionDialog(context);
-      if (fullname != null && location != null) {
-        orderDB.set({
-          "$timeStamp": myOrder,
-        }, SetOptions(merge: true));
-        orderHistory.set({
-          "fullname": fullname,
-          "location": location,
-          "time": timeStamp,
-          "myOrder": myOrder,
-          "phone": phoneNumber
-        });
-        clearItems();
-        Navigator.of(context).pushNamed("pay", arguments: totalPrice);
-      }
+    if (fullname != null && fullname != "") {
+      print("sending order");
+      orderDB.set({
+        "$timeStamp": myOrder,
+      }, SetOptions(merge: true));
+      orderHistory.set({
+        "fullname": fullname!.toLowerCase(),
+        "location": "pick-up",
+        "time": timeStamp,
+        "myOrder": myOrder,
+        "phone": phoneNumber,
+        "isDelivery": isDelivery,
+      });
+      clearItems();
+      Navigator.of(context).pushNamed("pay", arguments: totalPrice);
     } else {
-      showAlertDialog(
-          context, "Cs Kitchen", "Please add items to the cart first");
+      showAlertDialog(context, "Cs Kitchen", "Please Enter a Valid Name");
     }
   }
 
-  clearItems() async {
+  sendOrderDelivery() async {
+    var id = await widget.auth.currentUser();
+    var phoneNumber = await widget.auth.currentPhone();
+    var timeStamp = DateTime.now().millisecondsSinceEpoch;
+    var orderDB = FirebaseFirestore.instance.collection("orders").doc(id);
+    var orderHistory =
+        FirebaseFirestore.instance.collection("orderHistory").doc("$timeStamp");
+
+    if (fullname != null &&
+        location != null &&
+        location!.isNotEmpty &&
+        fullname!.isNotEmpty) {
+      print("sending order");
+      orderDB.set({
+        "$timeStamp": myOrder,
+      }, SetOptions(merge: true));
+      orderHistory.set({
+        "fullname": fullname!.toLowerCase(),
+        "location": location!.toLowerCase(),
+        "time": timeStamp,
+        "myOrder": myOrder,
+        "phone": phoneNumber,
+        "isDelivery": isDelivery,
+      });
+      clearItems();
+      Navigator.of(context)
+          .pushNamed("pay", arguments: (totalPrice + deliveryCharge));
+    } else {
+      showAlertDialog(
+          context, "Cs Kitchen", "Please Enter a Valid Name and Location");
+    }
+  }
+
+  Future<void> clearItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       prefs.clear();

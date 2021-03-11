@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cskitchen/src/screens/homeScreens/materialPages/fooditem.dart';
@@ -55,66 +56,67 @@ class _MenuState extends State<Menu> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Card(
-                      clipBehavior: Clip.antiAlias,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
                       elevation: 5.0,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0)),
-                      child: Container(
-                        height: 250,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(documents[index]["img"]),
-                            fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Stack(
+                        children: <Widget>[
+                          FittedBox(
+                            clipBehavior: Clip.hardEdge,
+                            child: CachedNetworkImage(
+                              height: 250,
+                              width: (MediaQuery.of(context).size.width - 20),
+                              fit: BoxFit.cover,
+                              imageUrl: documents[index]["img"],
+                              placeholder: (_, __) =>
+                                  Image.asset("assets/cs_icon.png"),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, bottom: 5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black38,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "${documents[index]["food"]}",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                    ),
+                          Positioned(
+                            top: 160,
+                            left: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.black45,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "GHS ${documents[index]["price"]}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, bottom: 5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black38,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Ghs ${documents[index]["price"]}",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                    ),
+                          ),
+                          Positioned(
+                            top: 200,
+                            left: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "${documents[index]["food"]}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
