@@ -32,7 +32,7 @@ class _FooditemState extends State<Fooditem> {
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
-  Future _addToCart(
+  Future<void> _addToCart(
     String? foodName,
     var foodPrice,
     int? foodQuantity,
@@ -119,19 +119,6 @@ class _FooditemState extends State<Fooditem> {
                             ),
                           )),
                     ),
-                    // Container(
-                    //   child: Padding(
-                    //       padding: const EdgeInsets.only(left: 20, top: 10),
-                    //       child: Align(
-                    //         alignment: Alignment.centerLeft,
-                    //         child: Text(
-                    //           "Delivery GHS ${widget.deliveryFee}",
-                    //           style: TextStyle(
-                    //             fontSize: 16,
-                    //           ),
-                    //         ),
-                    //       )),
-                    // ),
                     Container(
                       child: Padding(
                           padding: const EdgeInsets.only(left: 20, top: 10),
@@ -203,8 +190,8 @@ class _FooditemState extends State<Fooditem> {
               padding: const EdgeInsets.all(10.0),
               child: TextButton(
                 child: Icon(Icons.add_shopping_cart),
-                onPressed: () {
-                  _addToCart(
+                onPressed: () async {
+                  await _addToCart(
                     widget.food,
                     widget.price,
                     _selectedQuantity,

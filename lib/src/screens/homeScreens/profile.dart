@@ -25,52 +25,61 @@ class _ProfileState extends State<Profile> {
       children: <Widget>[
         Expanded(
           child: Container(
-              height: 250,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: ListView(
-                  children: <Widget>[
-                    // Divider(),
-                    ListTile(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Privacy())),
-                      leading: Icon(
-                        Icons.security,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Privacy Policy"),
+            decoration: BoxDecoration(
+              color: Colors.grey[50],
+              // image: DecorationImage(
+              //   image: AssetImage("assets/cs_logo.png"),
+              //   fit: BoxFit.cover,
+              // ),
+            ),
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Privacy())),
+                  leading: Icon(
+                    Icons.security,
+                    color: Colors.redAccent,
+                  ),
+                  title: Text(
+                    "Privacy Policy",
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
-                    Divider(),
-                    ListTile(
-                      onTap: () {},
-                      leading: Icon(
-                        Icons.warning,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Terms of Use"),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: () {},
-                      leading: Icon(
-                        Icons.code,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Developer"),
-                    ),
-                    Divider(),
-                    ListTile(
-                      onTap: _signOut,
-                      leading: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.redAccent,
-                      ),
-                      title: Text("Logout"),
-                    ),
-                  ],
+                  ),
                 ),
-              )),
-        )
+                Divider(),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(
+                    Icons.code,
+                    color: Colors.redAccent,
+                  ),
+                  title: Text(
+                    "Developer",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Divider(),
+                ListTile(
+                  onTap: _signOut,
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.redAccent,
+                  ),
+                  title: Text(
+                    "Logout",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -12,11 +12,11 @@ class Pay extends StatefulWidget {
 }
 
 class _PayState extends State<Pay> {
-  final String url = "https://ravesandbox.flutterwave.com/pay/cskitchen";
+  final String url = "https://flutterwave.com/pay/cskitcheno5wh";
   bool _isLoading = true;
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
-  final CookieManager cookieManager = CookieManager();
+  // final Completer<WebViewController> _controller =
+  //     Completer<WebViewController>();
+  // final CookieManager cookieManager = CookieManager();
   final _key = UniqueKey();
 
   @override

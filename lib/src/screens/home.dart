@@ -37,50 +37,98 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Cs kitchen",
-          style: TextStyle(fontSize: 20, color: Colors.white),
+    return Stack(
+      children: [
+        Scaffold(
+          body: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(
+                    image: AssetImage("assets/cs_icon.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              currentPage,
+              // ClipRRect(
+              //   clipBehavior: Clip.antiAlias,
+              //   borderRadius: BorderRadius.only(
+              //     bottomLeft: Radius.circular(30),
+              //     bottomRight: Radius.circular(30),
+              //   ),
+              //   child: Container(
+              //     height: 80,
+              //     decoration: BoxDecoration(
+              //         color: Color(0xFFE34343),
+              //         borderRadius: BorderRadius.only(
+              //           bottomLeft: Radius.circular(35),
+              //           bottomRight: Radius.circular(35),
+              //         ),
+              //         boxShadow: [
+              //           BoxShadow(
+              //             color: Colors.grey.withOpacity(0.3),
+              //             spreadRadius: 5,
+              //             blurRadius: 7,
+              //             offset: Offset(0, 3), // changes position of shadow
+              //           ),
+              //         ]),
+              //     child: Center(
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(top: 30),
+              //         child: Text(
+              //           "Cs kitchen",
+              //           style: TextStyle(
+              //             fontSize: 20,
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
+          // Stack(
+          //   children: [currentPage],
+          // ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.black,
+            currentIndex: currentTab,
+            onTap: (int index) {
+              setState(() {
+                currentTab = index;
+                currentPage = pages[index];
+              });
+            },
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.fastfood,
+                  color: Colors.white,
+                ),
+                label: "Menu",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                label: "cart",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_outline,
+                  color: Colors.white,
+                ),
+                label: "Profile",
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Stack(
-        children: [currentPage],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
-        currentIndex: currentTab,
-        onTap: (int index) {
-          setState(() {
-            currentTab = index;
-            currentPage = pages[index];
-          });
-        },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.fastfood,
-              color: Colors.white,
-            ),
-            label: "Menu",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
-            label: "cart",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-              color: Colors.white,
-            ),
-            label: "Profile",
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

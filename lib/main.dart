@@ -20,12 +20,11 @@ class Cskitchen extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Cs Kitchen',
+      title: 'Cs kitchen',
       theme: ThemeData(
         primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
-          color: Colors.redAccent[700],
-          elevation: 10.0,
+          color: Color(0xFFE34343),
         ),
         accentColor: Colors.redAccent,
       ),

@@ -108,7 +108,11 @@ class _CartState extends State<Cart> {
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "Delivery will be included during payment",
+                    '"Satify Your Cravings"',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  Text(
+                    "*Delivery of Ghs 4.00 will be included",
                     style: TextStyle(fontSize: 12),
                   )
                 ],
@@ -124,7 +128,7 @@ class _CartState extends State<Cart> {
                     child: TextField(
                       decoration: InputDecoration(
                           labelText:
-                              "Full Name (use the same name on payment)"),
+                              "Full Name (Use the Same Name on Payment)"),
                       onChanged: (value) {
                         this.fullname = value;
                       },
@@ -134,7 +138,7 @@ class _CartState extends State<Cart> {
                     padding: const EdgeInsets.all(10),
                     child: TextField(
                       decoration: InputDecoration(
-                          labelText: "Location (Landmark if Pickup)"),
+                          labelText: "Location/Landmark (Fill if Delivery)"),
                       onChanged: (value) {
                         this.location = value;
                       },
@@ -178,7 +182,7 @@ class _CartState extends State<Cart> {
       });
     } else {
       showAlertDialog(
-          context, "Cs Kitchen", "Please add items to the cart first");
+          context, "Cs kitchen", "Please add items to the cart first");
     }
   }
 
@@ -191,7 +195,6 @@ class _CartState extends State<Cart> {
         FirebaseFirestore.instance.collection("orderHistory").doc("$timeStamp");
 
     if (fullname != null && fullname != "") {
-      print("sending order");
       orderDB.set({
         "$timeStamp": myOrder,
       }, SetOptions(merge: true));
@@ -202,11 +205,12 @@ class _CartState extends State<Cart> {
         "myOrder": myOrder,
         "phone": phoneNumber,
         "isDelivery": isDelivery,
+        "isCompleted": false,
       });
       clearItems();
       Navigator.of(context).pushNamed("pay", arguments: totalPrice);
     } else {
-      showAlertDialog(context, "Cs Kitchen", "Please Enter a Valid Name");
+      showAlertDialog(context, "Cs kitchen", "Please Enter a Valid Name");
     }
   }
 
@@ -222,7 +226,6 @@ class _CartState extends State<Cart> {
         location != null &&
         location!.isNotEmpty &&
         fullname!.isNotEmpty) {
-      print("sending order");
       orderDB.set({
         "$timeStamp": myOrder,
       }, SetOptions(merge: true));
@@ -249,6 +252,8 @@ class _CartState extends State<Cart> {
       prefs.clear();
       myOrder!.clear();
       computeOrder();
+      fullname = null;
+      location = null;
     } catch (e) {
       print(e);
     }
@@ -311,39 +316,44 @@ class _CartState extends State<Cart> {
         itemCount: myOrder!.length,
         itemBuilder: (_, index) {
           var order = myOrder!;
-          return Dismissible(
-            background: Container(
-              color: Colors.redAccent,
-            ),
-            key: Key("${order[index]['foodName']}$index"),
-            onDismissed: (direction) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: Duration(seconds: 1),
-                  elevation: 10,
-                  content: Text("${order[index]['foodName']} has been removed"),
-                ),
-              );
-              setState(() {
-                order.removeAt(index);
-                computeOrder();
-                writeToPref();
-              });
-            },
-            child: Card(
-              elevation: 10,
-              child: ListTile(
-                title: Text(
-                  "${order[index]['foodName']}",
-                  style: TextStyle(fontSize: 20, fontFamily: "kalam Regular"),
-                ),
-                subtitle: Text(
-                  "Ghs ${order[index]['foodPrice']}",
-                  style: TextStyle(fontSize: 18, fontFamily: "kalam Regular"),
-                ),
-                trailing: Text(
-                  "x ${order[index]['foodQuantity']}",
-                  style: TextStyle(fontSize: 20),
+          final _key = UniqueKey();
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Dismissible(
+              background: Container(
+                color: Colors.redAccent,
+              ),
+              key: Key("$_key"),
+              onDismissed: (direction) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: Duration(seconds: 1),
+                    elevation: 10,
+                    content:
+                        Text("${order[index]['foodName']} has been removed"),
+                  ),
+                );
+                setState(() {
+                  order.removeAt(index);
+                  computeOrder();
+                  writeToPref();
+                });
+              },
+              child: Card(
+                elevation: 10,
+                child: ListTile(
+                  title: Text(
+                    "${order[index]['foodName']}",
+                    style: TextStyle(fontSize: 20, fontFamily: "kalam Regular"),
+                  ),
+                  subtitle: Text(
+                    "Ghs ${order[index]['foodPrice']}",
+                    style: TextStyle(fontSize: 18, fontFamily: "kalam Regular"),
+                  ),
+                  trailing: Text(
+                    "x ${order[index]['foodQuantity']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
                 ),
               ),
             ),

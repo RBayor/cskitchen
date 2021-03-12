@@ -10,7 +10,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   // Future getMenu() async {
-  //   var db = FirebaseFirestore.instance;
+  //   var db = ;
   //   QuerySnapshot menu = db.collection("menu").get();
   //   FirebaseFirestore.instance.collection("menu").get()
   //   return menu.docs;
@@ -18,14 +18,10 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black26,
-        image: DecorationImage(
-          image: AssetImage("assets/cs_icon.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
       child: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection("menu").get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -56,7 +52,12 @@ class _MenuState extends State<Menu> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      right: 10,
+                      top: 10,
+                      bottom: 10,
+                    ),
                     child: Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       elevation: 5.0,
