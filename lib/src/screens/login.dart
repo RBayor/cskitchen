@@ -166,6 +166,7 @@ class _LoginState extends State<Login> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: TextFormField(
+                                  keyboardType: TextInputType.number,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,

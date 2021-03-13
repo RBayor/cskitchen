@@ -12,7 +12,7 @@ class Pay extends StatefulWidget {
 }
 
 class _PayState extends State<Pay> {
-  final String url = "https://flutterwave.com/pay/cskitcheno5wh";
+  final String url = "https://flutterwave.com/pay/cskitchenpayment";
   bool _isLoading = true;
   // final Completer<WebViewController> _controller =
   //     Completer<WebViewController>();

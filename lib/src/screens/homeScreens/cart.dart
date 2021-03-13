@@ -127,8 +127,13 @@ class _CartState extends State<Cart> {
                     padding: const EdgeInsets.all(10),
                     child: TextField(
                       decoration: InputDecoration(
-                          labelText:
-                              "Full Name (Use the Same Name on Payment)"),
+                        hintText: "Use the Same Name During Payment",
+                        labelText: "Full Name",
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF949494),
+                        ),
+                      ),
                       onChanged: (value) {
                         this.fullname = value;
                       },
@@ -138,7 +143,13 @@ class _CartState extends State<Cart> {
                     padding: const EdgeInsets.all(10),
                     child: TextField(
                       decoration: InputDecoration(
-                          labelText: "Location/Landmark (Fill if Delivery)"),
+                        hintText: "Landmark (Fill if Delivery)",
+                        labelText: "Location",
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF949494),
+                        ),
+                      ),
                       onChanged: (value) {
                         this.location = value;
                       },
@@ -236,6 +247,7 @@ class _CartState extends State<Cart> {
         "myOrder": myOrder,
         "phone": phoneNumber,
         "isDelivery": isDelivery,
+        "isCompleted": false,
       });
       clearItems();
       Navigator.of(context)
@@ -302,63 +314,103 @@ class _CartState extends State<Cart> {
           Text(
             "Empty Cart",
             style: TextStyle(
-                color: Colors.grey, fontSize: 20, fontFamily: "kalam Regular"),
+              color: Colors.grey,
+              fontSize: 20,
+              fontFamily: "kalam Regular",
+            ),
           ),
           Icon(
-            Icons.face,
+            Icons.shopping_cart_outlined,
             color: Colors.grey,
             size: 100,
           )
         ],
       ));
     } else {
-      return ListView.builder(
-        itemCount: myOrder!.length,
-        itemBuilder: (_, index) {
-          var order = myOrder!;
-          final _key = UniqueKey();
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Dismissible(
-              background: Container(
-                color: Colors.redAccent,
-              ),
-              key: Key("$_key"),
-              onDismissed: (direction) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: Duration(seconds: 1),
-                    elevation: 10,
-                    content:
-                        Text("${order[index]['foodName']} has been removed"),
-                  ),
-                );
-                setState(() {
-                  order.removeAt(index);
-                  computeOrder();
-                  writeToPref();
-                });
-              },
-              child: Card(
-                elevation: 10,
-                child: ListTile(
-                  title: Text(
-                    "${order[index]['foodName']}",
-                    style: TextStyle(fontSize: 20, fontFamily: "kalam Regular"),
-                  ),
-                  subtitle: Text(
-                    "Ghs ${order[index]['foodPrice']}",
-                    style: TextStyle(fontSize: 18, fontFamily: "kalam Regular"),
-                  ),
-                  trailing: Text(
-                    "x ${order[index]['foodQuantity']}",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
+      return Column(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                "Swipe To Remove From Cart",
+                style: TextStyle(fontSize: 20, fontFamily: "Great Vibes"),
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: myOrder!.length,
+              itemBuilder: (_, index) {
+                var order = myOrder!;
+                final _key = UniqueKey();
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Dismissible(
+                    background: Container(
+                      color: Colors.redAccent[100],
+                    ),
+                    key: Key("$_key"),
+                    onDismissed: (direction) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 1),
+                          elevation: 10,
+                          content: Text(
+                              "${order[index]['foodName']} has been removed"),
+                        ),
+                      );
+                      setState(() {
+                        order.removeAt(index);
+                        computeOrder();
+                        writeToPref();
+                      });
+                    },
+                    child: Card(
+                      elevation: 5,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      child: ListTile(
+                        title: Text(
+                          "${order[index]['foodName']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: "kalam Regular",
+                          ),
+                        ),
+                        subtitle: Text(
+                          "Ghs ${double.parse(order[index]['foodPrice']).toStringAsFixed(2)}",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "kalam Regular",
+                          ),
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "x ${order[index]['foodQuantity']}",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "kalam Regular",
+                              ),
+                            ),
+                            Text(
+                              "Ghs ${(double.parse(order[index]['foodQuantity']) * double.parse(order[index]['foodPrice'])).toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: "kalam Regular"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       );
     }
   }
