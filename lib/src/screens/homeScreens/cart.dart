@@ -327,90 +327,86 @@ class _CartState extends State<Cart> {
         ],
       ));
     } else {
-      return Column(
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Text(
-                "Swipe To Remove From Cart",
-                style: TextStyle(fontSize: 20, fontFamily: "Great Vibes"),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: myOrder!.length,
-              itemBuilder: (_, index) {
-                var order = myOrder!;
-                final _key = UniqueKey();
-                return Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Dismissible(
-                    background: Container(
-                      color: Colors.redAccent[100],
+      return SafeArea(
+        child: ListView.builder(
+          itemCount: myOrder!.length,
+          itemBuilder: (_, index) {
+            var order = myOrder!;
+            final _key = UniqueKey();
+            return Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Dismissible(
+                background: Container(
+                  color: Colors.redAccent[100],
+                ),
+                key: Key("$_key"),
+                onDismissed: (direction) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: Duration(seconds: 1),
+                      elevation: 10,
+                      content:
+                          Text("${order[index]['foodName']} has been removed"),
                     ),
-                    key: Key("$_key"),
-                    onDismissed: (direction) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 1),
-                          elevation: 10,
-                          content: Text(
-                              "${order[index]['foodName']} has been removed"),
+                  );
+                  setState(() {
+                    order.removeAt(index);
+                    computeOrder();
+                    writeToPref();
+                  });
+                },
+                child: Tooltip(
+                  waitDuration: Duration(milliseconds: 10),
+                  message: "Swipe to Remove",
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: "kalam Regular",
+                    color: Colors.white,
+                  ),
+                  child: Card(
+                    elevation: 5,
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    child: ListTile(
+                      title: Text(
+                        "${order[index]['foodName']}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: "kalam Regular",
                         ),
-                      );
-                      setState(() {
-                        order.removeAt(index);
-                        computeOrder();
-                        writeToPref();
-                      });
-                    },
-                    child: Card(
-                      elevation: 5,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      child: ListTile(
-                        title: Text(
-                          "${order[index]['foodName']}",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: "kalam Regular",
-                          ),
+                      ),
+                      subtitle: Text(
+                        "Ghs ${double.parse(order[index]['foodPrice']).toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "kalam Regular",
                         ),
-                        subtitle: Text(
-                          "Ghs ${double.parse(order[index]['foodPrice']).toStringAsFixed(2)}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "kalam Regular",
-                          ),
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "x ${order[index]['foodQuantity']}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "kalam Regular",
-                              ),
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "x ${order[index]['foodQuantity']}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: "kalam Regular",
                             ),
-                            Text(
-                              "Ghs ${(double.parse(order[index]['foodQuantity']) * double.parse(order[index]['foodPrice'])).toStringAsFixed(2)}",
-                              style: TextStyle(
-                                  fontSize: 16, fontFamily: "kalam Regular"),
-                            ),
-                          ],
-                        ),
+                          ),
+                          Text(
+                            "Ghs ${(double.parse(order[index]['foodQuantity']) * double.parse(order[index]['foodPrice'])).toStringAsFixed(2)}",
+                            style: TextStyle(
+                                fontSize: 16, fontFamily: "kalam Regular"),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            );
+          },
+        ),
       );
     }
   }
