@@ -9,13 +9,6 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  // Future getMenu() async {
-  //   var db = ;
-  //   QuerySnapshot menu = db.collection("menu").get();
-  //   FirebaseFirestore.instance.collection("menu").get()
-  //   return menu.docs;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(

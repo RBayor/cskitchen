@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,9 +12,6 @@ class Pay extends StatefulWidget {
 class _PayState extends State<Pay> {
   final String url = "https://flutterwave.com/pay/cskitchenpayment";
   bool _isLoading = true;
-  // final Completer<WebViewController> _controller =
-  //     Completer<WebViewController>();
-  // final CookieManager cookieManager = CookieManager();
   final _key = UniqueKey();
 
   @override

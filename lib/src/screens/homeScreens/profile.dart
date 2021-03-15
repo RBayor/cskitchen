@@ -27,10 +27,6 @@ class _ProfileState extends State<Profile> {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.grey[50],
-              // image: DecorationImage(
-              //   image: AssetImage("assets/cs_logo.png"),
-              //   fit: BoxFit.cover,
-              // ),
             ),
             child: ListView(
               children: <Widget>[

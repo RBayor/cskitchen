@@ -90,19 +90,12 @@ class _FooditemState extends State<Fooditem> {
                 floating: true,
                 expandedHeight: 250,
                 flexibleSpace: FlexibleSpaceBar(
-                    background: CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  imageUrl: widget.foodImage!,
-                  placeholder: (_, __) => Image.asset("assets/cs_icon.png"),
-                )
-                    // Container(
-                    //   color: Colors.white,
-                    //   child: Image(
-                    //     fit: BoxFit.cover,
-                    //     image: NetworkImage(widget.foodImage!),
-                    //   ),
-                    // ),
-                    ),
+                  background: CachedNetworkImage(
+                    fit: BoxFit.fill,
+                    imageUrl: widget.foodImage!,
+                    placeholder: (_, __) => Image.asset("assets/logo.png"),
+                  ),
+                ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate(

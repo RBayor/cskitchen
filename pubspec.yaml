@@ -1,7 +1,7 @@
 name: cskitchen
 description: Order your favourite Cs kitchen takeaway food and get it delivered to your door step.
 
-version: 1.0.0+17
+version: 1.0.0+18
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -33,30 +33,12 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/chips.jpg
+    #- assets/cs_icon1.png
     - assets/cs_icon.png
-    - assets/cs_icon1.png
-    - assets/cs_logo.png
+    - assets/backgroundTwo.jpg
+    - assets/logo.png
 
   fonts:
-    - family: Indie
-      fonts:
-        - asset: fonts/IndieFlower-Regular.ttf
-    - family: Satisfy
-      fonts:
-        - asset: fonts/Satisfy-Regular.ttf
-    - family: Cookie
-      fonts:
-        - asset: fonts/Cookie-Regular.ttf
-    - family: Caveat Regular
-      fonts:
-        - asset: fonts/Caveat-Regular.ttf
-    - family: Caveat Bold
-      fonts:
-        - asset: fonts/Caveat-Bold.ttf
-    - family: Great Vibes
-      fonts:
-        - asset: fonts/GreatVibes-Regular.ttf
     - family: kalam Regular
       fonts:
         - asset: fonts/Kalam-Regular.ttf

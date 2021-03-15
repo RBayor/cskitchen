@@ -58,6 +58,7 @@ class _LoginState extends State<Login> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
+                    keyboardType: TextInputType.number,
                     controller: _codeController,
                   ),
                 ],
@@ -114,7 +115,7 @@ class _LoginState extends State<Login> {
                     radius: 55,
                     backgroundColor: Colors.white,
                     child: Image(
-                      image: AssetImage("assets/cs_icon.png"),
+                      image: AssetImage("assets/logo.png"),
                     ),
                   ),
                   Center(
@@ -131,7 +132,7 @@ class _LoginState extends State<Login> {
               body: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/chips.jpg"),
+                    image: AssetImage("assets/backgroundTwo.jpg"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -144,9 +145,9 @@ class _LoginState extends State<Login> {
                         children: <Widget>[
                           CircleAvatar(
                             radius: 55,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.white70,
                             child: Image(
-                              image: AssetImage("assets/cs_logo.png"),
+                              image: AssetImage("assets/logo.png"),
                             ),
                           ),
                           Padding(
@@ -179,7 +180,7 @@ class _LoginState extends State<Login> {
                                     errorBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     icon: Icon(
-                                      Icons.phone_android,
+                                      Icons.phone_android_outlined,
                                       color: Colors.white,
                                     ),
                                     labelStyle: TextStyle(

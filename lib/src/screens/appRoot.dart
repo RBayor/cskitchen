@@ -26,12 +26,6 @@ class _AppRootState extends State<AppRoot> {
     });
   }
 
-  // void _signedIn() {
-  //   setState(() {
-  //     authState = AuthState.signedIn;
-  //   });
-  // }
-
   void _signedOut() {
     setState(() {
       authState = AuthState.notSignedIn;
