@@ -17,6 +17,7 @@ class _CartState extends State<Cart> {
   var totalPrice = 0.0;
   bool isDelivery = false;
   static const deliveryCharge = 4;
+  var checkFirstOrder;
 
   List? myOrder = [];
   String? location = "";
@@ -30,6 +31,7 @@ class _CartState extends State<Cart> {
       myOrder = value;
       computeOrder();
     });
+    // checkFirstOrder = isFirstOrder();
   }
 
   @override
@@ -193,6 +195,7 @@ class _CartState extends State<Cart> {
   }
 
   Future<void> placeCartOrder() async {
+    checkFirstOrder = await isFirstOrder();
     if (myOrder != null) {
       if (isworkHours()) {
         await showOrderOptionDialog(context).then((value) {
@@ -246,6 +249,19 @@ class _CartState extends State<Cart> {
     }
   }
 
+  Future<bool> isFirstOrder() async {
+    var user = await widget.auth.currentUser();
+
+    var _order =
+        await FirebaseFirestore.instance.collection("orders").doc(user).get();
+
+    if (_order.data() == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<void> sendOrderDelivery() async {
     var id = await widget.auth.currentUser();
     var phoneNumber = await widget.auth.currentPhone();
@@ -253,6 +269,7 @@ class _CartState extends State<Cart> {
     var orderDB = FirebaseFirestore.instance.collection("orders").doc(id);
     var orderHistory =
         FirebaseFirestore.instance.collection("orderHistory").doc("$timeStamp");
+    var totalCost = totalPrice;
 
     if (fullname != null &&
         location != null &&
@@ -271,8 +288,12 @@ class _CartState extends State<Cart> {
         "isCompleted": false,
       });
       clearItems();
-      Navigator.of(context)
-          .pushNamed("pay", arguments: (totalPrice + deliveryCharge));
+      if (!checkFirstOrder) {
+        Navigator.of(context)
+            .pushNamed("pay", arguments: (totalCost + deliveryCharge));
+      } else {
+        Navigator.of(context).pushNamed("pay", arguments: totalCost);
+      }
     } else {
       showAlertDialog(
           context, "Cs Kitchen", "Please Enter a Valid Name and Location");
