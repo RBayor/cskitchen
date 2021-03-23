@@ -179,25 +179,46 @@ class _CartState extends State<Cart> {
         });
   }
 
-  placeCartOrder() async {
+  bool isworkHours() {
+    var now = DateTime.now();
+    var opening = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0);
+    var closing = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 19, 45);
+
+    if (now.isAfter(opening) && now.isBefore(closing)) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> placeCartOrder() async {
     if (myOrder != null) {
-      await showOrderOptionDialog(context).then((value) {
-        switch (isDelivery) {
-          case true:
-            return sendOrderDelivery();
-          case false:
-            return sendOrderPickup();
-          default:
-            return null;
-        }
-      });
+      if (isworkHours()) {
+        await showOrderOptionDialog(context).then((value) {
+          switch (isDelivery) {
+            case true:
+              return sendOrderDelivery();
+            case false:
+              return sendOrderPickup();
+            default:
+              return null;
+          }
+        });
+      } else {
+        showAlertDialog(
+          context,
+          "Cs kitchen",
+          "Sorry work hours are between 10:00am and 7:45pm",
+        );
+      }
     } else {
       showAlertDialog(
           context, "Cs kitchen", "Please add items to the cart first");
     }
   }
 
-  sendOrderPickup() async {
+  Future<void> sendOrderPickup() async {
     var id = await widget.auth.currentUser();
     var phoneNumber = await widget.auth.currentPhone();
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -225,7 +246,7 @@ class _CartState extends State<Cart> {
     }
   }
 
-  sendOrderDelivery() async {
+  Future<void> sendOrderDelivery() async {
     var id = await widget.auth.currentUser();
     var phoneNumber = await widget.auth.currentPhone();
     var timeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -343,7 +364,7 @@ class _CartState extends State<Cart> {
                 onDismissed: (direction) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      duration: Duration(seconds: 1),
+                      duration: Duration(milliseconds: 500),
                       elevation: 10,
                       content:
                           Text("${order[index]['foodName']} has been removed"),
