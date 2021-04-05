@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
               ),
               actions: [
                 TextButton(
-                  child: Text("Done"),
+                  child: Text("Continue"),
                   onPressed: () {
                     FirebaseAuth auth = FirebaseAuth.instance;
                     var smsCode = _codeController.text.trim();
@@ -108,18 +108,21 @@ class _LoginState extends State<Login> {
         ? ScaffoldMessenger(
             key: scaffoldMessengerKey,
             child: Scaffold(
+              backgroundColor: Colors.red,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CircleAvatar(
-                    radius: 55,
+                    radius: 70,
                     backgroundColor: Colors.white,
                     child: Image(
                       image: AssetImage("assets/logo.png"),
                     ),
                   ),
                   Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                    ),
                   ),
                 ],
               ),
