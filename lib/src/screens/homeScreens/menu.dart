@@ -105,72 +105,42 @@ class _MenuState extends State<Menu> {
                     child: Container(
                       height: 200,
                       child: Card(
-                        color: Colors.blue[200],
+                        color: Colors.grey[300],
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         elevation: 5.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 150, top: 20),
-                              child: Container(
-                                height: 100,
-                                decoration: ShapeDecoration(
-                                  shape: CircleBorder(),
-                                  color: Colors.green[300],
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "GHS 0 delivery fee!",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 300, top: 110),
-                              child: Container(
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage("assets/logo.png"),
-                                  ),
+                              Text(
+                                "on first order",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "kalam Regular",
+                                  color: Colors.black54,
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "GHS 0 delivery fee!",
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    Text(
-                                      "on first order",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "kalam Regular",
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Satisfy Your Cravings!",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black54,
-                                        fontFamily: "kalam Regular",
-                                      ),
-                                    )
-                                  ]),
-                            )
-                          ],
-                        ),
+                              Text(
+                                "Satisfy Your Cravings!",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black54,
+                                  fontFamily: "kalam Regular",
+                                ),
+                              )
+                            ]),
                       ),
                     ),
                   ),

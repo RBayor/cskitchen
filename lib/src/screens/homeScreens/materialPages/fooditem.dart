@@ -22,7 +22,7 @@ class Fooditem extends StatefulWidget {
 
 class _FooditemState extends State<Fooditem> {
   List<String> cart = [];
-  List<int> foodQuantity = [1, 2, 3, 4, 5];
+  List<int> foodQuantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   int? _selectedQuantity = 1;
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
