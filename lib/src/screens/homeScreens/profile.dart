@@ -1,4 +1,5 @@
 import 'package:cskitchen/src/components/auth.dart';
+import 'package:cskitchen/src/screens/user/platinum.dart';
 import 'package:cskitchen/src/screens/user/privacy.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,8 @@ class _ProfileState extends State<Profile> {
                 ),
                 Divider(),
                 ListTile(
-                  onTap: () {},
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Platinum())),
                   leading: Icon(
                     Icons.code,
                     color: Colors.redAccent,
